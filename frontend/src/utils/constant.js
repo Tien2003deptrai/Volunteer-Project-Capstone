@@ -1,0 +1,12 @@
+export const USER_API = "http://localhost:5000/api/v1/user";
+export const DUTY_API = "http://localhost:5000/api/v1/duty";
+export const ORGANIZATION_API = "http://localhost:5000/api/v1/organization";
+export const APPLICATION_API = "http://localhost:5000/api/v1/app";
+export const GROUP_API = "http://localhost:5000/api/v1/group";
+export const POST_API = "http://localhost:5000/api/v1/post";
+export const COMMENT_API = "http://localhost:5000/api/v1/comment";
+export const REPORT_API = "http://localhost:5000/api/v1/report";
+export const ADMIN_API = "http://localhost:5000/api/v1/admin";
+export const FRIEND_API = "http://localhost:5000/api/v1/friend";
+export const MESSAGE_API = "http://localhost:5000/api/v1/message";
+export const NOTIFICATION_API = "http://localhost:5000/api/v1/notification";

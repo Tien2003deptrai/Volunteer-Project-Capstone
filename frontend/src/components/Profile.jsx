@@ -1,0 +1,284 @@
+import { useState, useMemo } from "react";
+import Navbar from "./shared/Navbar";
+import Footer from "./shared/Footer";
+import { Avatar, AvatarImage } from "./ui/avatar";
+import { Button } from "./ui/button";
+import { Contact, Mail, Pen, MapPin, Calendar, Building2, Award, FileText, Download, History, CheckCircle2, Clock, XCircle } from "lucide-react";
+import { Badge } from "./ui/badge";
+import UpdateProfileDialog from "./UpdateProfileDialog";
+import { useSelector } from "react-redux";
+import useGetAppliedDuties from "@/hooks/useGetAppliedDuties";
+import AppliedDutyTable from "./AppliedDutyTable";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card";
+import { useNavigate } from "react-router-dom";
+
+const Profile = () => {
+  useGetAppliedDuties();
+  const [open, setOpen] = useState(false);
+  const { user } = useSelector((store) => store.auth);
+  const { allAppliedDuties } = useSelector((store) => store.duty);
+  const navigate = useNavigate();
+
+  // Filter accepted duties for activity history
+  const activityHistory = useMemo(() => {
+    return allAppliedDuties.filter(
+      (application) => application.status === 'accepted' && application.duty
+    );
+  }, [allAppliedDuties]);
+
+  const formatDate = (dateString) => {
+    if (!dateString) return "N/A";
+    const date = new Date(dateString);
+    return date.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  };
+
+  const getStatusIcon = (status) => {
+    switch (status) {
+      case 'accepted':
+        return <CheckCircle2 className="h-4 w-4 text-green-600" />;
+      case 'pending':
+        return <Clock className="h-4 w-4 text-yellow-600" />;
+      case 'rejected':
+        return <XCircle className="h-4 w-4 text-red-600" />;
+      default:
+        return null;
+    }
+  };
+
+  const getStatusBadge = (status) => {
+    switch (status) {
+      case 'accepted':
+        return <Badge className="bg-green-100 text-green-700 border-green-300">Accepted</Badge>;
+      case 'pending':
+        return <Badge className="bg-yellow-100 text-yellow-700 border-yellow-300">Pending</Badge>;
+      case 'rejected':
+        return <Badge className="bg-red-100 text-red-700 border-red-300">Rejected</Badge>;
+      default:
+        return <Badge>{status}</Badge>;
+    }
+  };
+
+  return (
+    <div className="min-h-screen flex flex-col bg-gray-50">
+      <Navbar />
+
+      <main className="flex-grow">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          {/* Profile Header Card */}
+          <Card className="mb-6 border-2 border-gray-200 shadow-lg">
+            <CardContent className="p-6 md:p-8">
+              <div className="flex flex-col md:flex-row justify-between gap-6">
+                <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6">
+                  <div className="relative">
+                    <Avatar className="h-24 w-24 md:h-32 md:w-32 border-4 border-white shadow-lg">
+                      <AvatarImage src={user?.profile?.profilePhoto} />
+                    </Avatar>
+                    <div className="absolute -bottom-2 -right-2 bg-green-500 rounded-full p-1.5 border-4 border-white">
+                      <div className="h-3 w-3 bg-green-400 rounded-full"></div>
+                    </div>
+                  </div>
+                  <div className="text-center sm:text-left flex-1">
+                    <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
+                      {user?.fullname || "User"}
+                    </h1>
+                    {user?.profile?.bio && (
+                      <p className="text-gray-600 text-sm md:text-base mb-4 max-w-md">
+                        {user.profile.bio}
+                      </p>
+                    )}
+                    <div className="flex flex-wrap items-center gap-4 text-sm text-gray-600">
+                      <div className="flex items-center gap-2">
+                        <Mail className="h-4 w-4 text-[#467057]" />
+                        <span>{user?.email}</span>
+                      </div>
+                      {user?.phoneNumber && (
+                        <div className="flex items-center gap-2">
+                          <Contact className="h-4 w-4 text-[#467057]" />
+                          <span>{user.phoneNumber}</span>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+                <div className="flex justify-center md:justify-end">
+                  <Button
+                    onClick={() => setOpen(true)}
+                    className="bg-[#467057] hover:bg-[#2A4B37] text-white px-6 py-2"
+                    size="lg"
+                  >
+                    <Pen className="h-4 w-4 mr-2" />
+                    Edit Profile
+                  </Button>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {/* Left Column - Skills & Resume */}
+            <div className="lg:col-span-1 space-y-6">
+              {/* Skills Card */}
+              <Card className="border border-gray-200 shadow-md">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2 text-lg">
+                    <Award className="h-5 w-5 text-[#467057]" />
+                    Skills
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  {user?.profile?.skills && user.profile.skills.length > 0 ? (
+                    <div className="flex flex-wrap gap-2">
+                      {user.profile.skills.map((item, index) => (
+                        <Badge
+                          key={index}
+                          className="bg-[#467057]/10 text-[#467057] border-[#467057]/20 hover:bg-[#467057]/20 px-3 py-1"
+                        >
+                          {item}
+                        </Badge>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="text-sm text-gray-500">No skills added yet</p>
+                  )}
+                </CardContent>
+              </Card>
+
+              {/* Resume Card */}
+              <Card className="border border-gray-200 shadow-md">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2 text-lg">
+                    <FileText className="h-5 w-5 text-[#467057]" />
+                    Resume
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  {user?.profile?.resume ? (
+                    <div className="space-y-3">
+                      <a
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        href={user.profile.resume}
+                        className="flex items-center gap-2 text-[#467057] hover:text-[#2A4B37] hover:underline transition-colors"
+                      >
+                        <Download className="h-4 w-4" />
+                        <span className="text-sm font-medium break-words">
+                          {user.profile.resumeOriginalName || "Download Resume"}
+                        </span>
+                      </a>
+                    </div>
+                  ) : (
+                    <p className="text-sm text-gray-500">No resume uploaded</p>
+                  )}
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Right Column - Applied Duties & Activity History */}
+            <div className="lg:col-span-2 space-y-6">
+              {/* Applied Duties Card */}
+              <Card className="border border-gray-200 shadow-md">
+                <CardHeader>
+                  <CardTitle className="text-xl font-bold text-gray-900 flex items-center gap-2">
+                    <FileText className="h-6 w-6 text-[#467057]" />
+                    Applied Duties
+                  </CardTitle>
+                  <CardDescription>
+                    View all duties you have applied for
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <AppliedDutyTable />
+                </CardContent>
+              </Card>
+
+              {/* Activity History Card */}
+              <Card className="border border-gray-200 shadow-md">
+                <CardHeader>
+                  <CardTitle className="text-xl font-bold text-gray-900 flex items-center gap-2">
+                    <History className="h-6 w-6 text-[#467057]" />
+                    Activity History
+                  </CardTitle>
+                  <CardDescription>
+                    Your completed and ongoing volunteer activities
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  {activityHistory.length > 0 ? (
+                    <div className="space-y-4">
+                      {activityHistory.map((application) => (
+                        <div
+                          key={application._id}
+                          className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow bg-white cursor-pointer"
+                          onClick={() => navigate(`/description/${application.duty?._id}`)}
+                        >
+                          <div className="flex items-start justify-between gap-4">
+                            <div className="flex-1 min-w-0">
+                              <div className="flex items-center gap-2 mb-2">
+                                <h3 className="font-semibold text-lg text-gray-900 truncate">
+                                  {application.duty?.tittle || "Untitled Duty"}
+                                </h3>
+                                {getStatusIcon(application.status)}
+                              </div>
+
+                              {application.duty?.organization && (
+                                <div className="flex items-center gap-2 text-sm text-gray-600 mb-2">
+                                  <Building2 className="h-4 w-4 text-[#467057]" />
+                                  <span>{application.duty.organization.name}</span>
+                                </div>
+                              )}
+
+                              {application.duty?.location && (
+                                <div className="flex items-center gap-2 text-sm text-gray-600 mb-2">
+                                  <MapPin className="h-4 w-4 text-[#467057]" />
+                                  <span>{application.duty.location}</span>
+                                </div>
+                              )}
+
+                              <div className="flex items-center gap-4 text-xs text-gray-500 mt-3">
+                                <div className="flex items-center gap-1">
+                                  <Calendar className="h-3 w-3" />
+                                  <span>Applied: {formatDate(application.createdAt)}</span>
+                                </div>
+                                {application.duty?.createdAt && (
+                                  <div className="flex items-center gap-1">
+                                    <Calendar className="h-3 w-3" />
+                                    <span>Started: {formatDate(application.duty.createdAt)}</span>
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+
+                            <div className="flex-shrink-0">
+                              {getStatusBadge(application.status)}
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="text-center py-12">
+                      <History className="h-16 w-16 text-gray-300 mx-auto mb-4" />
+                      <p className="text-gray-500 font-medium">No activity history yet</p>
+                      <p className="text-sm text-gray-400 mt-2">
+                        Your accepted duties will appear here
+                      </p>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <Footer />
+      <UpdateProfileDialog open={open} setOpen={setOpen} />
+    </div>
+  );
+};
+
+export default Profile;
