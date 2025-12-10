@@ -19,7 +19,6 @@ const Profile = () => {
   const { allAppliedDuties } = useSelector((store) => store.duty);
   const navigate = useNavigate();
 
-  // Filter accepted duties for activity history
   const activityHistory = useMemo(() => {
     return allAppliedDuties.filter(
       (application) => application.status === 'accepted' && application.duty
@@ -29,7 +28,7 @@ const Profile = () => {
   const formatDate = (dateString) => {
     if (!dateString) return "N/A";
     const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", {
+    return date.toLocaleDateString("vi-VN", {
       year: "numeric",
       month: "long",
       day: "numeric",
@@ -52,11 +51,11 @@ const Profile = () => {
   const getStatusBadge = (status) => {
     switch (status) {
       case 'accepted':
-        return <Badge className="bg-green-100 text-green-700 border-green-300">Accepted</Badge>;
+        return <Badge className="bg-green-100 text-green-700 border-green-300">Đã chấp nhận</Badge>;
       case 'pending':
-        return <Badge className="bg-yellow-100 text-yellow-700 border-yellow-300">Pending</Badge>;
+        return <Badge className="bg-yellow-100 text-yellow-700 border-yellow-300">Đang chờ</Badge>;
       case 'rejected':
-        return <Badge className="bg-red-100 text-red-700 border-red-300">Rejected</Badge>;
+        return <Badge className="bg-red-100 text-red-700 border-red-300">Đã từ chối</Badge>;
       default:
         return <Badge>{status}</Badge>;
     }
@@ -68,7 +67,6 @@ const Profile = () => {
 
       <main className="flex-grow">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          {/* Profile Header Card */}
           <Card className="mb-6 border-2 border-gray-200 shadow-lg">
             <CardContent className="p-6 md:p-8">
               <div className="flex flex-col md:flex-row justify-between gap-6">
@@ -83,7 +81,7 @@ const Profile = () => {
                   </div>
                   <div className="text-center sm:text-left flex-1">
                     <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
-                      {user?.fullname || "User"}
+                      {user?.fullname || "Người dùng"}
                     </h1>
                     {user?.profile?.bio && (
                       <p className="text-gray-600 text-sm md:text-base mb-4 max-w-md">
@@ -111,7 +109,7 @@ const Profile = () => {
                     size="lg"
                   >
                     <Pen className="h-4 w-4 mr-2" />
-                    Edit Profile
+                    Chỉnh sửa hồ sơ
                   </Button>
                 </div>
               </div>
@@ -119,14 +117,12 @@ const Profile = () => {
           </Card>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {/* Left Column - Skills & Resume */}
             <div className="lg:col-span-1 space-y-6">
-              {/* Skills Card */}
               <Card className="border border-gray-200 shadow-md">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2 text-lg">
                     <Award className="h-5 w-5 text-[#467057]" />
-                    Skills
+                    Kỹ năng
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -142,17 +138,16 @@ const Profile = () => {
                       ))}
                     </div>
                   ) : (
-                    <p className="text-sm text-gray-500">No skills added yet</p>
+                    <p className="text-sm text-gray-500">Chưa thêm kỹ năng nào</p>
                   )}
                 </CardContent>
               </Card>
 
-              {/* Resume Card */}
               <Card className="border border-gray-200 shadow-md">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2 text-lg">
                     <FileText className="h-5 w-5 text-[#467057]" />
-                    Resume
+                    Hồ sơ
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -166,28 +161,26 @@ const Profile = () => {
                       >
                         <Download className="h-4 w-4" />
                         <span className="text-sm font-medium break-words">
-                          {user.profile.resumeOriginalName || "Download Resume"}
+                          {user.profile.resumeOriginalName || "Tải xuống hồ sơ"}
                         </span>
                       </a>
                     </div>
                   ) : (
-                    <p className="text-sm text-gray-500">No resume uploaded</p>
+                    <p className="text-sm text-gray-500">Chưa tải lên hồ sơ nào</p>
                   )}
                 </CardContent>
               </Card>
             </div>
 
-            {/* Right Column - Applied Duties & Activity History */}
             <div className="lg:col-span-2 space-y-6">
-              {/* Applied Duties Card */}
               <Card className="border border-gray-200 shadow-md">
                 <CardHeader>
                   <CardTitle className="text-xl font-bold text-gray-900 flex items-center gap-2">
                     <FileText className="h-6 w-6 text-[#467057]" />
-                    Applied Duties
+                    Nghĩa vụ đã ứng tuyển
                   </CardTitle>
                   <CardDescription>
-                    View all duties you have applied for
+                    Xem tất cả các nghĩa vụ bạn đã ứng tuyển
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -195,15 +188,14 @@ const Profile = () => {
                 </CardContent>
               </Card>
 
-              {/* Activity History Card */}
               <Card className="border border-gray-200 shadow-md">
                 <CardHeader>
                   <CardTitle className="text-xl font-bold text-gray-900 flex items-center gap-2">
                     <History className="h-6 w-6 text-[#467057]" />
-                    Activity History
+                    Lịch sử hoạt động
                   </CardTitle>
                   <CardDescription>
-                    Your completed and ongoing volunteer activities
+                    Các hoạt động tình nguyện đã hoàn thành và đang thực hiện của bạn
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -219,7 +211,7 @@ const Profile = () => {
                             <div className="flex-1 min-w-0">
                               <div className="flex items-center gap-2 mb-2">
                                 <h3 className="font-semibold text-lg text-gray-900 truncate">
-                                  {application.duty?.tittle || "Untitled Duty"}
+                                  {application.duty?.tittle || "Nghĩa vụ chưa có tiêu đề"}
                                 </h3>
                                 {getStatusIcon(application.status)}
                               </div>
@@ -241,12 +233,12 @@ const Profile = () => {
                               <div className="flex items-center gap-4 text-xs text-gray-500 mt-3">
                                 <div className="flex items-center gap-1">
                                   <Calendar className="h-3 w-3" />
-                                  <span>Applied: {formatDate(application.createdAt)}</span>
+                                  <span>Ứng tuyển: {formatDate(application.createdAt)}</span>
                                 </div>
                                 {application.duty?.createdAt && (
                                   <div className="flex items-center gap-1">
                                     <Calendar className="h-3 w-3" />
-                                    <span>Started: {formatDate(application.duty.createdAt)}</span>
+                                    <span>Bắt đầu: {formatDate(application.duty.createdAt)}</span>
                                   </div>
                                 )}
                               </div>
@@ -262,9 +254,9 @@ const Profile = () => {
                   ) : (
                     <div className="text-center py-12">
                       <History className="h-16 w-16 text-gray-300 mx-auto mb-4" />
-                      <p className="text-gray-500 font-medium">No activity history yet</p>
+                      <p className="text-gray-500 font-medium">Chưa có lịch sử hoạt động</p>
                       <p className="text-sm text-gray-400 mt-2">
-                        Your accepted duties will appear here
+                        Các nghĩa vụ đã được chấp nhận sẽ xuất hiện ở đây
                       </p>
                     </div>
                   )}

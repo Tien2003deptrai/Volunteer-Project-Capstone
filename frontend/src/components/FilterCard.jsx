@@ -13,11 +13,11 @@ const FilterCard = () => {
 
   const getExperienceLabel = (level) => {
     const labels = {
-      1: "Entry Level (1)",
-      2: "Intermediate (2)",
-      3: "Advanced (3)"
+      1: "Mới vào nghề (1)",
+      2: "Trung cấp (2)",
+      3: "Nâng cao (3)"
     };
-    return labels[level] || `Level ${level}`;
+    return labels[level] || `Cấp độ ${level}`;
   };
 
   const handleLocationChange = (value) => {
@@ -44,16 +44,16 @@ const FilterCard = () => {
   const hasActiveFilters = locationFilter || jobTypeFilter || experienceFilter;
 
   const getExperienceDisplayValue = () => {
-    if (experienceFilter === "1") return "Entry Level (1)";
-    if (experienceFilter === "2") return "Intermediate (2)";
-    if (experienceFilter === "3") return "Advanced (3)";
+    if (experienceFilter === "1") return "Mới vào nghề (1)";
+    if (experienceFilter === "2") return "Trung cấp (2)";
+    if (experienceFilter === "3") return "Nâng cao (3)";
     return "";
   };
 
   return (
     <div className='w-full min-w-64 bg-white p-5 mb-4 rounded-lg shadow-md border border-gray-200 sticky top-4'>
       <div className='flex items-center justify-between mb-4'>
-        <h1 className='font-bold text-xl text-gray-800'>Filter Duties</h1>
+        <h1 className='font-bold text-xl text-gray-800'>Lọc Hoạt động</h1>
         {hasActiveFilters && (
           <Button
             variant="ghost"
@@ -62,17 +62,15 @@ const FilterCard = () => {
             className='text-xs text-gray-600 hover:text-gray-900'
           >
             <X className='h-4 w-4 mr-1' />
-            Clear
           </Button>
         )}
       </div>
       <hr className='mb-4 border-gray-200' />
 
-      {/* Location Filter */}
       <div className='mb-6'>
         <div className='flex items-center gap-2 mb-3'>
           <MapPin className='h-5 w-5 text-blue-600' />
-          <h2 className='font-semibold text-base text-gray-700'>Location</h2>
+          <h2 className='font-semibold text-base text-gray-700'>Địa điểm</h2>
         </div>
         {loading ? (
           <div className='flex items-center justify-center py-4'>
@@ -97,7 +95,7 @@ const FilterCard = () => {
                   )
                 })
               ) : (
-                <p className='text-sm text-gray-500 py-2'>No locations available</p>
+                <p className='text-sm text-gray-500 py-2'>Không có địa điểm nào</p>
               )}
             </div>
           </RadioGroup>
@@ -106,11 +104,10 @@ const FilterCard = () => {
 
       <hr className='mb-4 border-gray-200' />
 
-      {/* Job Type Filter */}
       <div className='mb-6'>
         <div className='flex items-center gap-2 mb-3'>
           <Briefcase className='h-5 w-5 text-green-600' />
-          <h2 className='font-semibold text-base text-gray-700'>Job Type</h2>
+          <h2 className='font-semibold text-base text-gray-700'>Loại công việc</h2>
         </div>
         {loading ? (
           <div className='flex items-center justify-center py-4'>
@@ -135,7 +132,7 @@ const FilterCard = () => {
                   )
                 })
               ) : (
-                <p className='text-sm text-gray-500 py-2'>No job types available</p>
+                <p className='text-sm text-gray-500 py-2'>Không có loại công việc nào</p>
               )}
             </div>
           </RadioGroup>
@@ -144,11 +141,10 @@ const FilterCard = () => {
 
       <hr className='mb-4 border-gray-200' />
 
-      {/* Experience Level Filter */}
       <div className='mb-4'>
         <div className='flex items-center gap-2 mb-3'>
           <Award className='h-5 w-5 text-purple-600' />
-          <h2 className='font-semibold text-base text-gray-700'>Experience Level</h2>
+          <h2 className='font-semibold text-base text-gray-700'>Cấp độ kinh nghiệm</h2>
         </div>
         {loading ? (
           <div className='flex items-center justify-center py-4'>
@@ -174,17 +170,16 @@ const FilterCard = () => {
                   )
                 })
               ) : (
-                <p className='text-sm text-gray-500 py-2'>No experience levels available</p>
+                <p className='text-sm text-gray-500 py-2'>Không có cấp độ kinh nghiệm nào</p>
               )}
             </div>
           </RadioGroup>
         )}
       </div>
 
-      {/* Active Filters Summary */}
       {hasActiveFilters && (
         <div className='mt-4 pt-4 border-t border-gray-200'>
-          <p className='text-xs text-gray-500 mb-2'>Active Filters:</p>
+          <p className='text-xs text-gray-500 mb-2'>Bộ lọc đang hoạt động:</p>
           <div className='flex flex-wrap gap-2'>
             {locationFilter && (
               <span className='inline-flex items-center gap-1 px-2 py-1 bg-blue-100 text-blue-700 text-xs rounded-full'>
@@ -201,9 +196,9 @@ const FilterCard = () => {
             {experienceFilter && (
               <span className='inline-flex items-center gap-1 px-2 py-1 bg-purple-100 text-purple-700 text-xs rounded-full'>
                 <Award className='h-3 w-3' />
-                {experienceFilter === "1" ? "Entry Level" :
-                  experienceFilter === "2" ? "Intermediate" :
-                    experienceFilter === "3" ? "Advanced" : ""}
+                {experienceFilter === "1" ? "Mới vào nghề" :
+                  experienceFilter === "2" ? "Trung cấp" :
+                    experienceFilter === "3" ? "Nâng cao" : ""}
               </span>
             )}
           </div>

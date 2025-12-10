@@ -155,7 +155,7 @@ const UpcomingEvents = () => {
                   navigate(`/description/${duty._id}`);
                 }}
               >
-                View Details
+                Xem chi tiết
                 <ArrowRight className="h-4 w-4 ml-1" />
               </Button>
             </div>
@@ -166,9 +166,9 @@ const UpcomingEvents = () => {
   };
 
   const tabs = [
-    { id: 'startingSoon', label: 'Starting Soon', icon: Sparkles, data: upcomingEvents.startingSoon },
-    { id: 'openRegistration', label: 'Open Registration', icon: Calendar, data: upcomingEvents.openRegistration },
-    { id: 'nearDeadline', label: 'Near Deadline', icon: AlertCircle, data: upcomingEvents.nearDeadline }
+    { id: 'startingSoon', label: 'Bắt đầu sớm', icon: Sparkles, data: upcomingEvents.startingSoon },
+    { id: 'openRegistration', label: 'Mở đăng ký', icon: Calendar, data: upcomingEvents.openRegistration },
+    { id: 'nearDeadline', label: 'Hết hạn gần', icon: AlertCircle, data: upcomingEvents.nearDeadline }
   ];
 
   if (loading) {
@@ -229,10 +229,10 @@ const UpcomingEvents = () => {
           <div className="mb-8">
             <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2 flex items-center gap-3">
               <Sparkles className="h-8 w-8 text-[#467057]" />
-              Upcoming Events
+              Các Hoạt động Sắp Diễn Ra
             </h1>
             <p className="text-gray-600 text-lg">
-              Discover volunteer opportunities starting soon, open for registration, or with approaching deadlines
+              Khám phá các cơ hội tình nguyện bắt đầu sớm, mở đăng ký hoặc có thời gian hết hạn gần
             </p>
           </div>
 

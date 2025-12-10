@@ -1,4 +1,3 @@
-import React from "react";
 import { motion } from "framer-motion";
 
 const Footer = () => {
@@ -53,6 +52,9 @@ const Footer = () => {
               </svg>
             </a>
           </div>
+        </div>
+        <div className="mt-8 text-center text-gray-600 text-sm">
+          <p>&copy; {new Date().getFullYear()} Dtu Volunteer. Tất cả các quyền được bảo lưu.</p>
         </div>
       </div>
     </footer>

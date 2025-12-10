@@ -1,9 +1,7 @@
 // Latest_Duties.jsx
-import React from "react";
 import { useSelector } from "react-redux";
 import { motion } from "framer-motion";
 import DutyCards from "./DutyCards";
-import useGetAllDuties from "@/hooks/useGetAllDuties";
 
 const Latest_Duties = () => {
   const { allDuties } = useSelector((store) => store.duty);
@@ -23,7 +21,7 @@ const Latest_Duties = () => {
         transition={{ duration: 0.5 }}
         className="text-3xl font-bold my-10 text-center"
       >
-        <span className="text-[#467057]">Latest & Top</span> Volunteer Duties 
+        <span className="text-[#467057]">Mới Nhất & Hàng Đầu</span> Nghĩa Vụ Tình Nguyện
       </motion.h1>
 
       <motion.div
@@ -55,7 +53,7 @@ const Latest_Duties = () => {
             viewport={{ once: false, amount: 0.2 }}
             transition={{ duration: 0.5 }}
           >
-            No Duties Available
+            Không Có Nghĩa Vụ Nào
           </motion.span>
         )}
       </motion.div>

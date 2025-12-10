@@ -10,32 +10,32 @@ const HowItWorksSection = () => {
   const steps = [
     {
       icon: <Search className="h-8 w-8" />,
-      title: "Browse Opportunities",
-      description: "Explore hundreds of volunteer opportunities that match your interests and skills. Filter by location, type, and time commitment.",
+      title: "Duyệt Cơ Hội",
+      description: "Khám phá hàng trăm cơ hội tình nguyện phù hợp với sở thích và kỹ năng của bạn. Lọc theo địa điểm, loại hình và thời gian cam kết.",
       color: "from-blue-500 to-blue-600",
       bgColor: "bg-blue-50",
       iconColor: "text-blue-600"
     },
     {
       icon: <UserCheck className="h-8 w-8" />,
-      title: "Apply & Get Accepted",
-      description: "Submit your application and wait for approval. Once accepted, you'll join a community of passionate volunteers.",
+      title: "Ứng Tuyển & Được Chấp Nhận",
+      description: "Gửi đơn ứng tuyển và chờ phê duyệt. Sau khi được chấp nhận, bạn sẽ gia nhập cộng đồng những tình nguyện viên nhiệt huyết.",
       color: "from-green-500 to-green-600",
       bgColor: "bg-green-50",
       iconColor: "text-green-600"
     },
     {
       icon: <Users className="h-8 w-8" />,
-      title: "Join Groups & Connect",
-      description: "Connect with other volunteers in your group. Share experiences, collaborate on projects, and build lasting friendships.",
+      title: "Tham Gia Nhóm & Kết Nối",
+      description: "Kết nối với những tình nguyện viên khác trong nhóm của bạn. Chia sẻ trải nghiệm, hợp tác trong các dự án và xây dựng tình bạn lâu dài.",
       color: "from-purple-500 to-purple-600",
       bgColor: "bg-purple-50",
       iconColor: "text-purple-600"
     },
     {
       icon: <HandHeart className="h-8 w-8" />,
-      title: "Make an Impact",
-      description: "Start volunteering and make a real difference! Track your contributions, share your journey, and inspire others.",
+      title: "Tạo Tác Động",
+      description: "Bắt đầu tình nguyện và tạo ra sự khác biệt thực sự! Theo dõi đóng góp của bạn, chia sẻ hành trình và truyền cảm hứng cho người khác.",
       color: "from-[#467057] to-[#2A4B37]",
       bgColor: "bg-[#D0F0DD]",
       iconColor: "text-[#467057]"
@@ -53,10 +53,10 @@ const HowItWorksSection = () => {
           className="text-center mb-12"
         >
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            How It <span className="text-[#467057]">Works</span>
+            Cách <span className="text-[#467057]">Hoạt Động</span>
           </h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Get started in just a few simple steps and begin making a difference today
+            Bắt đầu chỉ với vài bước đơn giản và bắt đầu tạo ra sự khác biệt ngay hôm nay
           </p>
         </motion.div>
 
@@ -132,25 +132,25 @@ const HowItWorksSection = () => {
         >
           <div className="bg-gradient-to-r from-[#467057] to-[#5a8a6f] rounded-2xl p-8 md:p-12 text-white">
             <h3 className="text-2xl md:text-3xl font-bold mb-4">
-              Ready to Start Your Volunteer Journey?
+              Sẵn sàng bắt đầu hành trình tình nguyện của bạn?
             </h3>
             <p className="text-lg text-gray-100 mb-6 max-w-2xl mx-auto">
-              Join thousands of volunteers making a positive impact in their communities.
-              Your journey starts with a single click.
+              Tham gia hàng ngàn tình nguyện viên tạo ra tác động tích cực trong cộng đồng của họ.
+              Hành trình của bạn bắt đầu với một cú nhấp chuột.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button
                 onClick={() => navigate("/duties")}
                 className="bg-white text-[#467057] hover:bg-gray-100 font-semibold px-8 py-6 text-lg"
               >
-                Browse Opportunities
+                Duyệt Cơ Hội
               </Button>
               <Button
                 onClick={() => navigate("/signup")}
                 variant="outline"
-                className="border-2 border-white text-white hover:bg-white/10 font-semibold px-8 py-6 text-lg"
+                className="bg-white text-[#467057] hover:bg-gray-100 font-semibold px-8 py-6 text-lg"
               >
-                Create Account
+                Tạo Tài Khoản
               </Button>
             </div>
           </div>
@@ -161,4 +161,3 @@ const HowItWorksSection = () => {
 };
 
 export default HowItWorksSection;
-

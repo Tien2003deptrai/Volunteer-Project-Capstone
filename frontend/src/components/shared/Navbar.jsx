@@ -27,7 +27,7 @@ const Navbar = () => {
       }
     } catch (error) {
       console.log(error);
-      toast.error(error.response?.data?.message || "Logout failed");
+      toast.error(error.response?.data?.message || "Đăng xuất thất bại");
     }
   };
 
@@ -52,7 +52,7 @@ const Navbar = () => {
         </motion.h1>
 
         {/* Mobile Menu Button */}
-        <button className="md:hidden" onClick={() => setIsOpen(!isOpen)} aria-label="Toggle menu">
+        <button className="md:hidden" onClick={() => setIsOpen(!isOpen)} aria-label="Chuyển đổi menu">
           {isOpen ? <X size={28} /> : <Menu size={28} />}
         </button>
 
@@ -61,17 +61,17 @@ const Navbar = () => {
           <ul className="flex items-center text-gray-600 font-medium gap-5">
             {user && user.role === "admin" ? (
               <>
-                <Link to="/admin/organizations"><li>Organizations</li></Link>
-                <Link to="/admin/duties"><li>Duties</li></Link>
+                <Link to="/admin/organizations"><li>Tổ chức</li></Link>
+                <Link to="/admin/duties"><li>Hoạt động</li></Link>
               </>
             ) : (
               <>
-                <Link to="/"><li>Home</li></Link>
-                <Link to="/duties"><li>Duties</li></Link>
-                <Link to="/browse"><li>Browse</li></Link>
-                <Link to="/upcoming"><li>Upcoming</li></Link>
-                <Link to="/about"><li>About</li></Link>
-                <Link to="/gallery"><li>Gallery</li></Link>
+                <Link to="/"><li>Trang chủ</li></Link>
+                <Link to="/duties"><li>Hoạt động</li></Link>
+                <Link to="/browse"><li>Hoạt động hôm nay</li></Link>
+                <Link to="/upcoming"><li>Sắp diễn ra</li></Link>
+                <Link to="/about"><li>Về chúng tôi</li></Link>
+                <Link to="/gallery"><li>Cộng đồng</li></Link>
               </>
             )}
           </ul>
@@ -91,11 +91,11 @@ const Navbar = () => {
             <div className="flex items-center gap-5">
               <Link to="/login">
                 <Button className="text-gray-600" variant="outline">
-                  Login
+                  Đăng nhập
                 </Button>
               </Link>
               <Link to="/signup">
-                <Button className="text-white bg-[#467057] hover:bg-[#2A4B37]">Sign Up</Button>
+                <Button className="text-white bg-[#467057] hover:bg-[#2A4B37]">Đăng ký</Button>
               </Link>
             </div>
           ) : user ? (
@@ -105,11 +105,11 @@ const Navbar = () => {
                   <Avatar className="cursor-pointer w-10 h-10 border-2 border-[#467057] hover:border-[#2A4B37] transition-colors">
                     <AvatarImage
                       src={user?.profile?.profilePhoto || "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400"}
-                      alt={user?.fullname || "User"}
+                      alt={user?.fullname || "Người dùng"}
                       className="object-cover"
                     />
                     <AvatarFallback className="bg-[#467057] text-white font-semibold">
-                      {user?.fullname?.charAt(0)?.toUpperCase() || "U"}
+                      {user?.fullname?.charAt(0)?.toUpperCase() || "N"}
                     </AvatarFallback>
                   </Avatar>
                 </button>
@@ -119,23 +119,23 @@ const Navbar = () => {
                   <Avatar className="w-12 h-12 border-2 border-[#467057]">
                     <AvatarImage
                       src={user?.profile?.profilePhoto || "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400"}
-                      alt={user?.fullname || "User"}
+                      alt={user?.fullname || "Người dùng"}
                       className="object-cover"
                     />
                     <AvatarFallback className="bg-[#467057] text-white font-semibold">
-                      {user?.fullname?.charAt(0)?.toUpperCase() || "U"}
+                      {user?.fullname?.charAt(0)?.toUpperCase() || "N"}
                     </AvatarFallback>
                   </Avatar>
                   <div className="flex-1 min-w-0">
-                    <h4 className="font-medium text-gray-900 truncate">{user.fullname || "User"}</h4>
-                    <p className="text-sm text-gray-600 truncate">{user?.profile?.bio || "No bio available"}</p>
+                    <h4 className="font-medium text-gray-900 truncate">{user.fullname || "Người dùng"}</h4>
+                    <p className="text-sm text-gray-600 truncate">{user?.profile?.bio || "Không có tiểu sử"}</p>
                   </div>
                 </div>
                 <div className="flex flex-col gap-2">
                   {user.role === "user" && (
                     <Button variant="link" className="flex items-center gap-2 justify-start px-0" asChild>
                       <Link to="/profile">
-                        <User2 className="h-4 w-4" /> View Profile
+                        <User2 className="h-4 w-4" /> Xem hồ sơ
                       </Link>
                     </Button>
                   )}
@@ -144,7 +144,7 @@ const Navbar = () => {
                     variant="link"
                     className="flex items-center gap-2 justify-start px-0 text-red-600 hover:text-red-800"
                   >
-                    <LogOut className="h-4 w-4" /> Logout
+                    <LogOut className="h-4 w-4" /> Đăng xuất
                   </Button>
                 </div>
               </PopoverContent>
@@ -159,22 +159,22 @@ const Navbar = () => {
           <ul className="flex flex-col items-center font-medium gap-4 w-full">
             {user && user.role === "admin" ? (
               <>
-                <Link to="/admin/organizations" onClick={() => setIsOpen(false)}><li className="py-2">Organizations</li></Link>
-                <Link to="/admin/duties" onClick={() => setIsOpen(false)}><li className="py-2">Duties</li></Link>
+                <Link to="/admin/organizations" onClick={() => setIsOpen(false)}><li className="py-2">Tổ chức</li></Link>
+                <Link to="/admin/duties" onClick={() => setIsOpen(false)}><li className="py-2">Hoạt động</li></Link>
               </>
             ) : (
               <>
-                <Link to="/" onClick={() => setIsOpen(false)}><li className="py-2">Home</li></Link>
-                <Link to="/duties" onClick={() => setIsOpen(false)}><li className="py-2">Duties</li></Link>
-                <Link to="/browse" onClick={() => setIsOpen(false)}><li className="py-2">Browse</li></Link>
-                <Link to="/upcoming" onClick={() => setIsOpen(false)}><li className="py-2">Upcoming</li></Link>
-                <Link to="/about" onClick={() => setIsOpen(false)}><li className="py-2">About</li></Link>
-                <Link to="/gallery" onClick={() => setIsOpen(false)}><li className="py-2">Gallery</li></Link>
+                <Link to="/" onClick={() => setIsOpen(false)}><li className="py-2">Trang chủ</li></Link>
+                <Link to="/duties" onClick={() => setIsOpen(false)}><li className="py-2">Hoạt động</li></Link>
+                <Link to="/browse" onClick={() => setIsOpen(false)}><li className="py-2">Hoạt động hôm nay</li></Link>
+                <Link to="/upcoming" onClick={() => setIsOpen(false)}><li className="py-2">Sắp diễn ra</li></Link>
+                <Link to="/about" onClick={() => setIsOpen(false)}><li className="py-2">Về chúng tôi</li></Link>
+                <Link to="/gallery" onClick={() => setIsOpen(false)}><li className="py-2">Cộng đồng</li></Link>
                 {user && user.role === "user" && (
                   <Link to="/messages" onClick={() => setIsOpen(false)}>
                     <li className="py-2 flex items-center justify-center gap-2">
                       <MessageSquare className="h-4 w-4" />
-                      Messages
+                      Tin nhắn hoạt động
                       <span className="w-2 h-2 bg-red-500 rounded-full"></span>
                     </li>
                   </Link>
@@ -187,10 +187,10 @@ const Navbar = () => {
           {!user ? (
             <div className="flex flex-col items-center gap-4 mt-4 w-full px-4">
               <Link to="/login" onClick={() => setIsOpen(false)} className="w-full">
-                <Button variant="outline" className="w-full">Login</Button>
+                <Button variant="outline" className="w-full">Đăng nhập</Button>
               </Link>
               <Link to="/signup" onClick={() => setIsOpen(false)} className="w-full">
-                <Button className="bg-[#467057] hover:bg-[#2A4B37] text-white w-full">Sign Up</Button>
+                <Button className="bg-[#467057] hover:bg-[#2A4B37] text-white w-full">Đăng ký</Button>
               </Link>
             </div>
           ) : user ? (
@@ -198,20 +198,20 @@ const Navbar = () => {
               <Avatar className="cursor-pointer w-20 h-20 border-4 border-[#467057] shadow-lg flex-shrink-0">
                 <AvatarImage
                   src={user?.profile?.profilePhoto || "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400"}
-                  alt={user?.fullname || "User"}
+                  alt={user?.fullname || "Người dùng"}
                   className="object-cover"
                 />
                 <AvatarFallback className="bg-[#467057] text-white text-2xl font-bold">
-                  {user?.fullname?.charAt(0)?.toUpperCase() || "U"}
+                  {user?.fullname?.charAt(0)?.toUpperCase() || "N"}
                 </AvatarFallback>
               </Avatar>
-              <h4 className="font-semibold text-lg text-gray-900">{user.fullname || "User"}</h4>
-              <p className="text-sm text-gray-600 text-center px-4">{user?.profile?.bio || "No bio available"}</p>
+              <h4 className="font-semibold text-lg text-gray-900">{user.fullname || "Người dùng"}</h4>
+              <p className="text-sm text-gray-600 text-center px-4">{user?.profile?.bio || "Không có tiểu sử"}</p>
               {user.role === "user" && (
                 <Button variant="link" className="mt-2" asChild>
                   <Link to="/profile" onClick={() => setIsOpen(false)}>
                     <User2 className="h-4 w-4 mr-2" />
-                    View Profile
+                    Xem hồ sơ
                   </Link>
                 </Button>
               )}
@@ -224,7 +224,7 @@ const Navbar = () => {
                 className="text-red-600 hover:text-red-800"
               >
                 <LogOut className="h-4 w-4 mr-2" />
-                Logout
+                Đăng xuất
               </Button>
             </div>
           ) : null}

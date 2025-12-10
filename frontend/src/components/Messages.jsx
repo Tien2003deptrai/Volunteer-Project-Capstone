@@ -406,7 +406,7 @@ const Messages = () => {
             {/* Header */}
             <div className="p-4 border-b border-gray-200">
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-xl font-bold text-gray-900">Messages</h2>
+                <h2 className="text-xl font-bold text-gray-900">Tin nhắn</h2>
                 <Popover open={showNotifications} onOpenChange={setShowNotifications}>
                   <PopoverTrigger className="relative inline-flex items-center justify-center rounded-md h-9 w-9 hover:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-[#467057] bg-transparent border-0 p-0">
                     <Bell className="h-5 w-5" />
@@ -418,7 +418,7 @@ const Messages = () => {
                   </PopoverTrigger>
                   <PopoverContent className="w-80 p-0" align="end">
                     <div className="p-4 border-b border-gray-200 flex items-center justify-between">
-                      <h3 className="font-semibold text-gray-900">Notifications</h3>
+                      <h3 className="font-semibold text-gray-900">Thông báo</h3>
                       {unreadCount > 0 && (
                         <Button
                           variant="ghost"
@@ -773,8 +773,8 @@ const Messages = () => {
                   <div className="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center mx-auto mb-4">
                     <Search className="h-8 w-8 text-gray-400" />
                   </div>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">Select a conversation</h3>
-                  <p className="text-sm text-gray-500">Choose a conversation from the list to start messaging</p>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">Chọn một cuộc trò chuyện</h3>
+                  <p className="text-sm text-gray-500">Chọn một cuộc trò chuyện từ danh sách để bắt đầu nhắn tin</p>
                 </div>
               </div>
             )}

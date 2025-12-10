@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Quote, Star, User } from "lucide-react";
+import { Quote, Star } from "lucide-react";
 import { Avatar, AvatarImage, AvatarFallback } from "./ui/avatar";
 import { Card, CardContent } from "./ui/card";
 
@@ -8,38 +8,38 @@ const TestimonialsSection = () => {
     {
       id: 1,
       name: "Sarah Johnson",
-      role: "Environmental Volunteer",
+      role: "Tình nguyện viên Môi trường",
       image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400",
-      content: "Change-Makers has connected me with amazing opportunities to make a real difference. The platform is easy to use and the community is incredibly supportive!",
+      content: "Change-Makers đã kết nối tôi với những cơ hội tuyệt vời để tạo ra sự khác biệt thực sự. Nền tảng dễ sử dụng và cộng đồng rất hỗ trợ!",
       rating: 5,
-      organization: "Green Earth Initiative"
+      organization: "Sáng kiến Trái đất Xanh"
     },
     {
       id: 2,
       name: "Michael Chen",
-      role: "Education Volunteer",
+      role: "Tình nguyện viên Giáo dục",
       image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400",
-      content: "I've been volunteering through this platform for 6 months now. It's been life-changing! The impact we're making together is incredible.",
+      content: "Tôi đã tình nguyện thông qua nền tảng này trong 6 tháng qua. Nó đã thay đổi cuộc sống! Tác động mà chúng tôi tạo ra cùng nhau thật đáng kinh ngạc.",
       rating: 5,
-      organization: "Education for All Foundation"
+      organization: "Quỹ Giáo dục Cho Tất cả"
     },
     {
       id: 3,
       name: "Emily Rodriguez",
-      role: "Community Health Volunteer",
+      role: "Tình nguyện viên Sức khỏe Cộng đồng",
       image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400",
-      content: "The best part is connecting with like-minded people who share the same passion for helping others. Highly recommend to anyone looking to volunteer!",
+      content: "Điều tốt nhất là kết nối với những người có cùng chí hướng giúp đỡ người khác. Rất khuyến nghị cho bất kỳ ai muốn tình nguyện!",
       rating: 5,
-      organization: "Community Health Center"
+      organization: "Trung tâm Sức khỏe Cộng đồng"
     },
     {
       id: 4,
       name: "David Kim",
-      role: "Youth Mentor",
+      role: "Cố vấn Thanh thiếu niên",
       image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400",
-      content: "As a mentor, I've seen firsthand how this platform brings together volunteers and creates lasting positive change. It's truly inspiring!",
+      content: "Là một cố vấn, tôi đã chứng kiến trực tiếp cách nền tảng này tập hợp các tình nguyện viên và tạo ra sự thay đổi tích cực lâu dài. Thật truyền cảm hứng!",
       rating: 5,
-      organization: "Youth Empowerment Network"
+      organization: "Mạng lưới Trao quyền Thanh thiếu niên"
     }
   ];
 
@@ -57,10 +57,10 @@ const TestimonialsSection = () => {
             <Quote className="h-10 w-10 text-[#467057]" />
           </div>
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            What Our <span className="text-[#467057]">Volunteers</span> Say
+            Những <span className="text-[#467057]">Tình nguyện viên</span> của chúng tôi nói gì
           </h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Real stories from real people making a difference in their communities
+            Những câu chuyện thực tế từ những con người thực tạo ra sự khác biệt trong cộng đồng của họ
           </p>
         </motion.div>
 
@@ -86,7 +86,7 @@ const TestimonialsSection = () => {
                   <div className="flex-1 mb-6">
                     <Quote className="h-8 w-8 text-[#467057]/20 mb-3" />
                     <p className="text-gray-700 leading-relaxed italic">
-                      "{testimonial.content}"
+                      &quot;{testimonial.content}&quot;
                     </p>
                   </div>
 
@@ -124,12 +124,12 @@ const TestimonialsSection = () => {
           transition={{ duration: 0.6, delay: 0.4 }}
           className="text-center mt-12"
         >
-          <p className="text-gray-600 mb-4">Join hundreds of satisfied volunteers</p>
+          <p className="text-gray-600 mb-4">Tham gia hàng trăm tình nguyện viên hài lòng</p>
           <a
             href="/signup"
             className="inline-flex items-center justify-center px-8 py-3 bg-[#467057] hover:bg-[#2A4B37] text-white font-semibold rounded-lg transition-colors shadow-lg hover:shadow-xl"
           >
-            Become a Volunteer Today
+            Trở Thành Tình nguyện viên Hôm nay
           </a>
         </motion.div>
       </div>
@@ -138,4 +138,3 @@ const TestimonialsSection = () => {
 };
 
 export default TestimonialsSection;
-
