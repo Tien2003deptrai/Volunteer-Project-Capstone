@@ -56,7 +56,7 @@ const AdminPosts = () => {
       }
     } catch (error) {
       console.log(error);
-      toast.error("Failed to load posts");
+      toast.error("Không tải được danh sách bài viết");
     } finally {
       setLoading(false);
     }
@@ -78,7 +78,7 @@ const AdminPosts = () => {
   const handleImageSelect = (e) => {
     const files = Array.from(e.target.files);
     if (files.length + selectedImages.length > 10) {
-      toast.error("Maximum 10 images allowed");
+      toast.error("Tối đa 10 ảnh");
       return;
     }
     setSelectedImages([...selectedImages, ...files]);
@@ -99,7 +99,7 @@ const AdminPosts = () => {
 
   const handleCreatePost = async () => {
     if (!postContent.trim() || !selectedGroup) {
-      toast.error("Please fill all fields");
+      toast.error("Vui lòng điền đầy đủ thông tin");
       return;
     }
 
@@ -122,7 +122,7 @@ const AdminPosts = () => {
         }
       );
       if (res.data.success) {
-        toast.success("Post created successfully");
+        toast.success("Tạo bài viết thành công");
         setShowCreateDialog(false);
         setPostContent('');
         setSelectedGroup('');
@@ -131,7 +131,7 @@ const AdminPosts = () => {
         fetchPosts();
       }
     } catch (error) {
-      toast.error(error.response?.data?.message || "Failed to create post");
+      toast.error(error.response?.data?.message || "Tạo bài viết thất bại");
     } finally {
       setCreating(false);
     }
@@ -143,13 +143,13 @@ const AdminPosts = () => {
         withCredentials: true
       });
       if (res.data.success) {
-        toast.success("Post deleted successfully");
+        toast.success("Xóa bài viết thành công");
         setShowDeleteDialog(false);
         setSelectedPost(null);
         fetchPosts();
       }
     } catch (error) {
-      toast.error(error.response?.data?.message || "Failed to delete post");
+      toast.error(error.response?.data?.message || "Xóa bài viết thất bại");
     }
   };
 
@@ -184,15 +184,15 @@ const AdminPosts = () => {
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Posts Management</h1>
-            <p className="text-gray-600 mt-2">Manage all group posts</p>
+            <h1 className="text-3xl font-bold text-gray-900">Quản lý bài viết</h1>
+            <p className="text-gray-600 mt-2">Quản lý tất cả bài viết của nhóm</p>
           </div>
           <Button
             onClick={() => setShowCreateDialog(true)}
             className="bg-[#467057] hover:bg-[#2A4B37]"
           >
             <Plus className="h-4 w-4 mr-2" />
-            Create Post
+            Tạo bài viết
           </Button>
         </div>
 
@@ -201,7 +201,7 @@ const AdminPosts = () => {
           <div className="relative flex-1 max-w-md">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
             <Input
-              placeholder="Search posts..."
+              placeholder="Tìm kiếm bài viết..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="pl-10"
@@ -214,14 +214,14 @@ const AdminPosts = () => {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Author</TableHead>
-                <TableHead>Content</TableHead>
-                <TableHead>Images</TableHead>
-                <TableHead>Group</TableHead>
-                <TableHead>Likes</TableHead>
-                <TableHead>Comments</TableHead>
-                <TableHead>Created</TableHead>
-                <TableHead className="text-right">Actions</TableHead>
+                <TableHead>Tác giả</TableHead>
+                <TableHead>Nội dung</TableHead>
+                <TableHead>Ảnh</TableHead>
+                <TableHead>Nhóm</TableHead>
+                <TableHead>Thích</TableHead>
+                <TableHead>Bình luận</TableHead>
+                <TableHead>Ngày tạo</TableHead>
+                <TableHead className="text-right">Thao tác</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -249,7 +249,7 @@ const AdminPosts = () => {
                           <span className="text-sm text-gray-600">{post.images.length}</span>
                         </div>
                       ) : (
-                        <span className="text-sm text-gray-400">No images</span>
+                        <span className="text-sm text-gray-400">Không có ảnh</span>
                       )}
                     </TableCell>
                     <TableCell>
@@ -281,7 +281,7 @@ const AdminPosts = () => {
               ) : (
                 <TableRow>
                   <TableCell colSpan={8} className="text-center py-8 text-gray-500">
-                    No posts found
+                    Không tìm thấy bài viết
                   </TableCell>
                 </TableRow>
               )}
@@ -295,10 +295,10 @@ const AdminPosts = () => {
             <DialogHeader>
               <DialogTitle className="text-2xl font-bold text-gray-900 flex items-center gap-2">
                 <Sparkles className="h-5 w-5 text-[#467057]" />
-                Create New Post
+                Tạo bài viết mới
               </DialogTitle>
               <DialogDescription className="text-gray-600">
-                Share your thoughts and images with the group
+                Chia sẻ suy nghĩ và hình ảnh với nhóm
               </DialogDescription>
             </DialogHeader>
             <div className="space-y-6 py-4">
@@ -306,11 +306,11 @@ const AdminPosts = () => {
               <div className="space-y-2">
                 <Label className="text-sm font-semibold text-gray-700 flex items-center gap-2">
                   <MessageSquare className="h-4 w-4" />
-                  Select Group
+                  Chọn nhóm
                 </Label>
                 <Select value={selectedGroup} onValueChange={setSelectedGroup}>
                   <SelectTrigger className="h-11 border-gray-300 focus:border-[#467057] focus:ring-[#467057]">
-                    <SelectValue placeholder="Choose a group to post in..." />
+                    <SelectValue placeholder="Chọn nhóm để đăng bài..." />
                   </SelectTrigger>
                   <SelectContent>
                     {groups.length > 0 ? (
@@ -323,7 +323,7 @@ const AdminPosts = () => {
                         </SelectItem>
                       ))
                     ) : (
-                      <div className="px-2 py-1.5 text-sm text-gray-500">No groups available</div>
+                      <div className="px-2 py-1.5 text-sm text-gray-500">Không có nhóm khả dụng</div>
                     )}
                   </SelectContent>
                 </Select>
@@ -331,17 +331,17 @@ const AdminPosts = () => {
 
               {/* Content */}
               <div className="space-y-2">
-                <Label className="text-sm font-semibold text-gray-700">Post Content</Label>
+                <Label className="text-sm font-semibold text-gray-700">Nội dung bài viết</Label>
                 <Textarea
                   value={postContent}
                   onChange={(e) => setPostContent(e.target.value)}
-                  placeholder="What's on your mind? Share your thoughts with the group..."
+                  placeholder="Bạn đang nghĩ gì? Chia sẻ với nhóm..."
                   rows={6}
                   className="resize-none border-gray-300 focus:border-[#467057] focus:ring-[#467057] text-gray-900 placeholder:text-gray-400"
                 />
                 <p className="text-xs text-gray-500 flex items-center gap-1">
                   <span>{postContent.length}</span>
-                  <span>characters</span>
+                  <span>kí tự</span>
                 </p>
               </div>
 
@@ -349,17 +349,17 @@ const AdminPosts = () => {
               <div className="space-y-2">
                 <Label className="text-sm font-semibold text-gray-700 flex items-center gap-2">
                   <ImageIcon className="h-4 w-4" />
-                  Images
-                  <span className="text-xs font-normal text-gray-500">(Max 10 images)</span>
+                  Hình ảnh
+                  <span className="text-xs font-normal text-gray-500">(Tối đa 10 ảnh)</span>
                 </Label>
                 <div className="space-y-3">
                   <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 hover:border-[#467057] transition-colors group">
                     <div className="flex flex-col items-center justify-center pt-5 pb-6">
                       <Upload className="h-8 w-8 text-gray-400 group-hover:text-[#467057] transition-colors mb-2" />
                       <p className="mb-2 text-sm text-gray-500">
-                        <span className="font-semibold text-[#467057]">Click to upload</span> or drag and drop
+                        <span className="font-semibold text-[#467057]">Nhấn để tải lên</span> hoặc kéo thả
                       </p>
-                      <p className="text-xs text-gray-400">PNG, JPG, GIF up to 10MB each</p>
+                      <p className="text-xs text-gray-400">PNG, JPG, GIF tối đa 10MB mỗi ảnh</p>
                     </div>
                     <Input
                       type="file"
@@ -373,7 +373,7 @@ const AdminPosts = () => {
                   {imagePreviews.length > 0 && (
                     <div className="space-y-2">
                       <p className="text-xs text-gray-600 font-medium">
-                        {imagePreviews.length} image{imagePreviews.length !== 1 ? 's' : ''} selected
+                        Đã chọn {imagePreviews.length} ảnh
                       </p>
                       <div className="grid grid-cols-4 gap-3">
                         {imagePreviews.map((preview, index) => (
@@ -393,7 +393,7 @@ const AdminPosts = () => {
                               <X className="h-3 w-3" />
                             </Button>
                             <div className="absolute bottom-0 left-0 right-0 bg-black/50 text-white text-xs text-center py-1 rounded-b-lg opacity-0 group-hover:opacity-100 transition-opacity">
-                              Image {index + 1}
+                              Ảnh {index + 1}
                             </div>
                           </div>
                         ))}
@@ -417,7 +417,7 @@ const AdminPosts = () => {
                   }}
                   className="min-w-[100px]"
                 >
-                  Cancel
+                  Hủy
                 </Button>
                 <Button
                   onClick={handleCreatePost}
@@ -427,12 +427,12 @@ const AdminPosts = () => {
                   {creating ? (
                     <span className="flex items-center gap-2">
                       <div className="h-4 w-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                      Creating...
+                      Đang tạo...
                     </span>
                   ) : (
                     <span className="flex items-center gap-2">
                       <Plus className="h-4 w-4" />
-                      Create Post
+                      Tạo bài viết
                     </span>
                   )}
                 </Button>
@@ -445,9 +445,9 @@ const AdminPosts = () => {
         <Dialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>Delete Post</DialogTitle>
+              <DialogTitle>Xóa bài viết</DialogTitle>
               <DialogDescription>
-                Are you sure you want to delete this post? This action cannot be undone.
+                Bạn có chắc muốn xóa bài viết này? Hành động này không thể hoàn tác.
               </DialogDescription>
             </DialogHeader>
             <div className="flex justify-end gap-3 mt-4">
@@ -458,13 +458,13 @@ const AdminPosts = () => {
                   setSelectedPost(null);
                 }}
               >
-                Cancel
+                Hủy
               </Button>
               <Button
                 variant="destructive"
                 onClick={handleDelete}
               >
-                Delete
+                Xóa
               </Button>
             </div>
           </DialogContent>

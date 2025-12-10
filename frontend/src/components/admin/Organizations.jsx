@@ -62,8 +62,8 @@ const Organizations = () => {
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Organizations Management</h1>
-            <p className="text-gray-600 mt-2">Manage all organizations</p>
+            <h1 className="text-3xl font-bold text-gray-900">Quản lý tổ chức</h1>
+            <p className="text-gray-600 mt-2">Quản lý tất cả tổ chức</p>
           </div>
           <Button
             onClick={() => {
@@ -73,7 +73,7 @@ const Organizations = () => {
             className="bg-[#467057] hover:bg-[#2A4B37]"
           >
             <Plus className="h-4 w-4 mr-2" />
-            Register Organization
+            Đăng ký tổ chức
           </Button>
         </div>
 
@@ -82,7 +82,7 @@ const Organizations = () => {
           <div className="relative flex-1 max-w-md">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
             <Input
-              placeholder="Search Organization"
+              placeholder="Tìm kiếm tổ chức"
               value={input}
               onChange={(e) => setInput(e.target.value)}
               className="pl-10"

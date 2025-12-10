@@ -58,7 +58,7 @@ const AdminGroups = () => {
       }
     } catch (error) {
       console.log(error);
-      toast.error("Failed to load groups");
+      toast.error("Không tải được danh sách nhóm");
     } finally {
       setLoading(false);
     }
@@ -79,7 +79,7 @@ const AdminGroups = () => {
 
   const handleAddMembers = async () => {
     if (selectedUsers.length === 0) {
-      toast.error("Please select at least one user");
+      toast.error("Vui lòng chọn ít nhất một người dùng");
       return;
     }
 
@@ -102,17 +102,17 @@ const AdminGroups = () => {
       const failed = results.length - successful;
 
       if (successful > 0) {
-        toast.success(`${successful} user(s) added successfully${failed > 0 ? `, ${failed} failed` : ''}`);
+        toast.success(`Thêm thành công ${successful} người dùng${failed > 0 ? `, ${failed} thất bại` : ''}`);
         setShowAddMemberDialog(false);
         setSelectedUsers([]);
         setUserSearchTerm('');
         setSelectedGroup(null);
         fetchGroups();
       } else {
-        toast.error("Failed to add users");
+        toast.error("Thêm người dùng thất bại");
       }
     } catch (error) {
-      toast.error(error.response?.data?.message || "Failed to add users");
+      toast.error(error.response?.data?.message || "Thêm người dùng thất bại");
     } finally {
       setAddingMembers(false);
     }
@@ -125,7 +125,7 @@ const AdminGroups = () => {
         { withCredentials: true }
       );
       if (res.data.success) {
-        toast.success("User removed from group successfully");
+        toast.success("Xóa thành viên khỏi nhóm thành công");
         setShowRemoveMemberDialog(false);
         setSelectedMember(null);
 
@@ -146,7 +146,7 @@ const AdminGroups = () => {
         await fetchGroups();
       }
     } catch (error) {
-      toast.error(error.response?.data?.message || "Failed to remove user");
+      toast.error(error.response?.data?.message || "Xóa thành viên khỏi nhóm thất bại");
     }
   };
 
@@ -188,7 +188,7 @@ const AdminGroups = () => {
       }
     } catch (error) {
       console.log(error);
-      toast.error("Failed to load applications");
+      toast.error("Không tải được danh sách đơn đăng ký");
     } finally {
       setLoadingApplications(false);
     }
@@ -200,7 +200,7 @@ const AdminGroups = () => {
       fetchApplications(group.duty._id);
       setShowApplicationsDialog(true);
     } else {
-      toast.error("Duty information not available");
+      toast.error("Không có thông tin hoạt động");
     }
   };
 
@@ -213,7 +213,7 @@ const AdminGroups = () => {
         { withCredentials: true }
       );
       if (res.data.success) {
-        toast.success(`Application ${status} successfully`);
+        toast.success("Cập nhật trạng thái đơn thành công");
         // Refresh applications and groups
         if (selectedGroup?.duty?._id) {
           await fetchApplications(selectedGroup.duty._id);
@@ -221,7 +221,7 @@ const AdminGroups = () => {
         await fetchGroups();
       }
     } catch (error) {
-      toast.error(error.response?.data?.message || "Failed to update application status");
+      toast.error(error.response?.data?.message || "Cập nhật trạng thái đơn thất bại");
     } finally {
       setUpdatingStatus(null);
     }
@@ -230,11 +230,11 @@ const AdminGroups = () => {
   const getStatusBadge = (status) => {
     switch (status) {
       case 'accepted':
-        return <Badge className="bg-green-100 text-green-700">Accepted</Badge>;
+        return <Badge className="bg-green-100 text-green-700">Đã duyệt</Badge>;
       case 'rejected':
-        return <Badge className="bg-red-100 text-red-700">Rejected</Badge>;
+        return <Badge className="bg-red-100 text-red-700">Từ chối</Badge>;
       default:
-        return <Badge className="bg-yellow-100 text-yellow-700">Pending</Badge>;
+        return <Badge className="bg-yellow-100 text-yellow-700">Đang chờ</Badge>;
     }
   };
 
@@ -259,8 +259,8 @@ const AdminGroups = () => {
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Groups Management</h1>
-            <p className="text-gray-600 mt-2">Manage all volunteer groups and their members</p>
+            <h1 className="text-3xl font-bold text-gray-900">Quản lý nhóm</h1>
+            <p className="text-gray-600 mt-2">Quản lý tất cả nhóm tình nguyện và thành viên</p>
           </div>
         </div>
 
@@ -269,7 +269,7 @@ const AdminGroups = () => {
           <div className="relative flex-1 max-w-md">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
             <Input
-              placeholder="Search groups by name or duty..."
+              placeholder="Tìm nhóm theo tên hoặc hoạt động..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="pl-10"
@@ -282,12 +282,12 @@ const AdminGroups = () => {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Group</TableHead>
-                <TableHead>Duty</TableHead>
-                <TableHead>Members</TableHead>
-                <TableHead>Created By</TableHead>
-                <TableHead>Created</TableHead>
-                <TableHead className="text-right">Actions</TableHead>
+                <TableHead>Nhóm</TableHead>
+                <TableHead>Hoạt động</TableHead>
+                <TableHead>Thành viên</TableHead>
+                <TableHead>Người tạo</TableHead>
+                <TableHead>Ngày tạo</TableHead>
+                <TableHead className="text-center">Thao tác</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -314,7 +314,7 @@ const AdminGroups = () => {
                       <div className="flex items-center gap-2">
                         <Users className="h-4 w-4 text-[#467057]" />
                         <span className="font-medium">{group.members?.length || 0}</span>
-                        <span className="text-gray-500 text-sm">members</span>
+                        <span className="text-gray-500 text-sm">thành viên</span>
                       </div>
                     </TableCell>
                     <TableCell>
@@ -332,7 +332,7 @@ const AdminGroups = () => {
                           className="border-blue-300 text-blue-700 hover:bg-blue-50"
                         >
                           <FileText className="h-4 w-4 mr-1" />
-                          Applications
+                          Đơn đăng ký
                         </Button>
                         <Button
                           variant="outline"
@@ -343,7 +343,7 @@ const AdminGroups = () => {
                           }}
                         >
                           <Users className="h-4 w-4 mr-1" />
-                          Members
+                          Thành viên
                         </Button>
                         <Button
                           variant="default"
@@ -357,7 +357,7 @@ const AdminGroups = () => {
                           className="bg-[#467057] hover:bg-[#2A4B37]"
                         >
                           <UserPlus className="h-4 w-4 mr-1" />
-                          Add
+                          Thêm
                         </Button>
                       </div>
                     </TableCell>
@@ -368,8 +368,8 @@ const AdminGroups = () => {
                   <TableCell colSpan={6} className="text-center py-12 text-gray-500">
                     <div className="flex flex-col items-center gap-2">
                       <MessageSquare className="h-12 w-12 text-gray-300" />
-                      <p className="text-lg font-medium">No groups found</p>
-                      <p className="text-sm">Try adjusting your search terms</p>
+                      <p className="text-lg font-medium">Không tìm thấy nhóm</p>
+                      <p className="text-sm">Hãy thử thay đổi từ khóa tìm kiếm</p>
                     </div>
                   </TableCell>
                 </TableRow>
@@ -389,7 +389,7 @@ const AdminGroups = () => {
                 <div>
                   <DialogTitle className="text-2xl">{selectedGroup?.name}</DialogTitle>
                   <DialogDescription className="mt-1">
-                    Manage group members ({selectedGroup?.members?.length || 0} total)
+                    Quản lý thành viên nhóm (tổng {selectedGroup?.members?.length || 0})
                   </DialogDescription>
                 </div>
               </div>
@@ -429,7 +429,7 @@ const AdminGroups = () => {
               ) : (
                 <div className="text-center py-8 text-gray-500">
                   <Users className="h-12 w-12 mx-auto mb-3 text-gray-300" />
-                  <p>No members in this group yet</p>
+                  <p>Chưa có thành viên trong nhóm này</p>
                 </div>
               )}
             </div>
@@ -445,9 +445,9 @@ const AdminGroups = () => {
                   <UserPlus className="h-6 w-6 text-white" />
                 </div>
                 <div>
-                  <DialogTitle className="text-2xl">Add Members to Group</DialogTitle>
+                  <DialogTitle className="text-2xl">Thêm thành viên vào nhóm</DialogTitle>
                   <DialogDescription className="mt-1">
-                    Select one or more users to add to <span className="font-semibold">{selectedGroup?.name}</span>
+                    Chọn một hoặc nhiều người dùng để thêm vào <span className="font-semibold">{selectedGroup?.name}</span>
                   </DialogDescription>
                 </div>
               </div>
@@ -458,7 +458,7 @@ const AdminGroups = () => {
                 <div className="relative flex-1">
                   <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
                   <Input
-                    placeholder="Search users by name or email..."
+                    placeholder="Tìm kiếm người dùng theo tên hoặc email..."
                     value={userSearchTerm}
                     onChange={(e) => setUserSearchTerm(e.target.value)}
                     className="pl-10"
@@ -471,8 +471,8 @@ const AdminGroups = () => {
                   className="whitespace-nowrap"
                 >
                   {selectedUsers.length === getAvailableUsers().length && getAvailableUsers().length > 0
-                    ? 'Deselect All'
-                    : 'Select All'}
+                    ? 'Bỏ chọn tất cả'
+                    : 'Chọn tất cả'}
                 </Button>
               </div>
 
@@ -480,7 +480,7 @@ const AdminGroups = () => {
               {selectedUsers.length > 0 && (
                 <div className="flex items-center gap-2">
                   <Badge className="bg-[#467057] text-white">
-                    {selectedUsers.length} user{selectedUsers.length !== 1 ? 's' : ''} selected
+                    Đã chọn {selectedUsers.length} người dùng
                   </Badge>
                   <Button
                     variant="ghost"
@@ -488,7 +488,7 @@ const AdminGroups = () => {
                     onClick={() => setSelectedUsers([])}
                     className="h-6 px-2 text-xs"
                   >
-                    Clear
+                    Xóa chọn
                   </Button>
                 </div>
               )}
@@ -527,9 +527,9 @@ const AdminGroups = () => {
                 ) : (
                   <div className="text-center py-12 text-gray-500">
                     <Users className="h-12 w-12 mx-auto mb-3 text-gray-300" />
-                    <p>No available users to add</p>
+                    <p>Không có người dùng khả dụng để thêm</p>
                     <p className="text-sm mt-1">
-                      {userSearchTerm ? 'Try a different search term' : 'All users are already members'}
+                      {userSearchTerm ? 'Hãy thử từ khóa khác' : 'Tất cả người dùng đã là thành viên'}
                     </p>
                   </div>
                 )}
@@ -547,7 +547,7 @@ const AdminGroups = () => {
                   }}
                   disabled={addingMembers}
                 >
-                  Cancel
+                  Hủy
                 </Button>
                 <Button
                   onClick={handleAddMembers}
@@ -557,12 +557,12 @@ const AdminGroups = () => {
                   {addingMembers ? (
                     <>
                       <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                      Adding...
+                      Đang thêm...
                     </>
                   ) : (
                     <>
                       <UserPlus className="h-4 w-4 mr-2" />
-                      Add {selectedUsers.length > 0 ? `${selectedUsers.length} ` : ''}Member{selectedUsers.length !== 1 ? 's' : ''}
+                      Thêm {selectedUsers.length > 0 ? `${selectedUsers.length} ` : ''}thành viên
                     </>
                   )}
                 </Button>
@@ -580,9 +580,9 @@ const AdminGroups = () => {
                   <FileText className="h-6 w-6 text-blue-600" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <DialogTitle className="text-2xl truncate">Applications for {selectedGroup?.duty?.tittle || 'Duty'}</DialogTitle>
+                  <DialogTitle className="text-2xl truncate">Đơn đăng ký cho {selectedGroup?.duty?.tittle || 'Hoạt động'}</DialogTitle>
                   <DialogDescription className="mt-1">
-                    Review and manage applications for this duty ({applications.length} total)
+                    Xem và quản lý đơn đăng ký cho hoạt động này (tổng {applications.length})
                   </DialogDescription>
                 </div>
               </div>
@@ -610,7 +610,7 @@ const AdminGroups = () => {
                           </div>
                           <p className="text-sm text-gray-500 truncate">{application.applicant?.email || 'N/A'}</p>
                           <p className="text-xs text-gray-400 mt-1">
-                            Applied: {new Date(application.createdAt).toLocaleDateString()}
+                            Ngày nộp: {new Date(application.createdAt).toLocaleDateString()}
                           </p>
                         </div>
                       </div>
@@ -629,7 +629,7 @@ const AdminGroups = () => {
                               ) : (
                                 <>
                                   <CheckCircle2 className="h-4 w-4 mr-1" />
-                                  Accept
+                                  Chấp nhận
                                 </>
                               )}
                             </Button>
@@ -645,14 +645,14 @@ const AdminGroups = () => {
                               ) : (
                                 <>
                                   <XCircle className="h-4 w-4 mr-1" />
-                                  Reject
+                                  Từ chối
                                 </>
                               )}
                             </Button>
                           </>
                         ) : (
                           <div className="text-sm text-gray-500 italic whitespace-nowrap">
-                            {application.status === 'accepted' ? 'Already accepted' : 'Already rejected'}
+                            {application.status === 'accepted' ? 'Đã được duyệt' : 'Đã bị từ chối'}
                           </div>
                         )}
                       </div>
@@ -663,7 +663,7 @@ const AdminGroups = () => {
                 <div className="text-center py-12 text-gray-500 flex-1 flex items-center justify-center">
                   <div>
                     <FileText className="h-12 w-12 mx-auto mb-3 text-gray-300" />
-                    <p>No applications found for this duty</p>
+                    <p>Không có đơn đăng ký cho hoạt động này</p>
                   </div>
                 </div>
               )}
@@ -677,7 +677,7 @@ const AdminGroups = () => {
                   setSelectedGroup(null);
                 }}
               >
-                Close
+                Đóng
               </Button>
             </div>
           </DialogContent>
@@ -687,10 +687,10 @@ const AdminGroups = () => {
         <Dialog open={showRemoveMemberDialog} onOpenChange={setShowRemoveMemberDialog}>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>Remove Member</DialogTitle>
+              <DialogTitle>Xóa thành viên</DialogTitle>
               <DialogDescription>
-                Are you sure you want to remove <span className="font-semibold">{selectedMember?.fullname}</span> from{' '}
-                <span className="font-semibold">{selectedGroup?.name}</span>? This action cannot be undone.
+                Bạn có chắc muốn xóa <span className="font-semibold">{selectedMember?.fullname}</span> khỏi{' '}
+                <span className="font-semibold">{selectedGroup?.name}</span>? Hành động này không thể hoàn tác.
               </DialogDescription>
             </DialogHeader>
             <div className="flex justify-end gap-3 mt-6">
@@ -701,14 +701,14 @@ const AdminGroups = () => {
                   setSelectedMember(null);
                 }}
               >
-                Cancel
+                Hủy
               </Button>
               <Button
                 variant="destructive"
                 onClick={handleRemoveMember}
               >
                 <UserMinus className="h-4 w-4 mr-2" />
-                Remove Member
+                Xóa thành viên
               </Button>
             </div>
           </DialogContent>

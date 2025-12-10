@@ -38,18 +38,18 @@ const AdminLayout = ({ children }) => {
       }
     } catch (error) {
       console.log(error);
-      toast.error("Logout failed");
+      toast.error("Đăng xuất thất bại");
     }
   };
 
   const menuItems = [
-    { path: '/admin/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
-    { path: '/admin/users', icon: Users, label: 'Users' },
-    { path: '/admin/organizations', icon: Building2, label: 'Organizations' },
-    { path: '/admin/duties', icon: Briefcase, label: 'Duties' },
-    { path: '/admin/groups', icon: MessageSquare, label: 'Groups' },
-    { path: '/admin/posts', icon: FileText, label: 'Posts' },
-    { path: '/admin/reports', icon: Flag, label: 'Reports' },
+    { path: '/admin/dashboard', icon: LayoutDashboard, label: 'Bảng điều khiển' },
+    { path: '/admin/users', icon: Users, label: 'Người dùng' },
+    { path: '/admin/organizations', icon: Building2, label: 'Tổ chức' },
+    { path: '/admin/duties', icon: Briefcase, label: 'Hoạt động' },
+    { path: '/admin/groups', icon: MessageSquare, label: 'Nhóm' },
+    { path: '/admin/posts', icon: FileText, label: 'Bài viết' },
+    { path: '/admin/reports', icon: Flag, label: 'Báo cáo' },
   ];
 
   return (
@@ -71,7 +71,7 @@ const AdminLayout = ({ children }) => {
           {/* Logo & Header */}
           <div className="p-6 border-b border-gray-200">
             <div className="flex items-center justify-between">
-              <h1 className="text-2xl font-bold text-[#467057]">Admin Panel</h1>
+              <h1 className="text-2xl font-bold text-[#467057]">Bảng Quản Trị</h1>
               <Button
                 variant="ghost"
                 size="icon"
@@ -128,7 +128,7 @@ const AdminLayout = ({ children }) => {
               onClick={logOutHandler}
             >
               <LogOut className="h-5 w-5 mr-3" />
-              Logout
+              Đăng xuất
             </Button>
           </div>
         </div>
@@ -150,7 +150,7 @@ const AdminLayout = ({ children }) => {
             <div className="flex-1" />
             <div className="flex items-center gap-4">
               <Link to="/" className="text-sm text-gray-600 hover:text-gray-900">
-                View Site
+                Xem trang
               </Link>
             </div>
           </div>

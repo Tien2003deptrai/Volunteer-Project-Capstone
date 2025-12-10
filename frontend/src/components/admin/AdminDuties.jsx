@@ -25,15 +25,15 @@ const AdminDuties = () => {
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Duties Management</h1>
-            <p className="text-gray-600 mt-2">Manage all volunteer duties</p>
+            <h1 className="text-3xl font-bold text-gray-900">Quản lý hoạt động</h1>
+            <p className="text-gray-600 mt-2">Quản lý tất cả hoạt động tình nguyện</p>
           </div>
           <Button
             onClick={() => setShowPostModal(true)}
             className="bg-[#467057] hover:bg-[#2A4B37]"
           >
             <Plus className="h-4 w-4 mr-2" />
-            Post New Duty
+            Đăng hoạt động mới
           </Button>
         </div>
 
@@ -42,7 +42,7 @@ const AdminDuties = () => {
           <div className="relative flex-1 max-w-md">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
             <Input
-              placeholder="Filter by organization, role"
+              placeholder="Lọc theo tổ chức, vai trò"
               value={input}
               onChange={(e) => setInput(e.target.value)}
               className="pl-10"

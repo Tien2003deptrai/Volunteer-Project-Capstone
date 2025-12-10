@@ -13,115 +13,179 @@ import { Comment } from "../models/comment_model.js";
 dotenv.config();
 
 // Fake data arrays
-const firstNames = ["John", "Jane", "Mike", "Sarah", "David", "Emily", "Chris", "Lisa", "Tom", "Anna", "James", "Maria", "Robert", "Emma", "William", "Olivia", "Michael", "Sophia", "Daniel", "Isabella"];
-const lastNames = ["Doe", "Smith", "Johnson", "Williams", "Brown", "Jones", "Garcia", "Miller", "Davis", "Rodriguez", "Martinez", "Hernandez", "Lopez", "Wilson", "Anderson", "Thomas", "Taylor", "Moore", "Jackson", "Martin"];
-const skills = ["Teaching", "Communication", "Event Planning", "Social Work", "Counseling", "Public Speaking", "Programming", "Web Development", "Management", "Leadership", "Environmental Science", "Project Management", "Education", "Curriculum Development", "Healthcare", "Digital Literacy", "Marketing", "Design", "Writing", "Research"];
-const locations = ["New York, USA", "Los Angeles, USA", "Chicago, USA", "Houston, USA", "Phoenix, USA", "Philadelphia, USA", "San Antonio, USA", "San Diego, USA", "Dallas, USA", "San Jose, USA"];
-const jobTypes = ["Part-time", "Full-time", "Volunteer", "Contract", "Internship"];
+const firstNames = ["Anh", "Binh", "Chau", "Dung", "Giang", "Hai", "Khanh", "Lan", "Linh", "Minh", "Ngoc", "Phuc", "Quan", "Quynh", "Son", "Thao", "Trang", "Trung", "Tuan", "Vy"];
+const lastNames = ["Nguyen", "Tran", "Le", "Pham", "Huynh", "Vo", "Phan", "Dang", "Bui", "Do", "Ho", "Ngo", "Duong", "Ly", "Ta", "Trinh", "Mai", "Dinh", "Cao", "Dao"];
+const skills = ["Kỹ năng giảng dạy", "Giao tiếp cộng đồng", "Tổ chức sự kiện", "Công tác xã hội", "Tham vấn tâm lý", "Thuyết trình", "Lập trình cơ bản", "Quản lý nhóm", "Lãnh đạo", "Hỗ trợ hậu cần", "Chăm sóc sức khỏe cộng đồng", "Truyền thông xã hội", "Hướng dẫn kỹ năng sống", "Hỗ trợ giáo dục", "Nghiên cứu và khảo sát", "Thiết kế hoạt động", "Gây quỹ cộng đồng", "Chăm sóc trẻ", "Hỗ trợ người cao tuổi", "Bảo vệ môi trường"];
+const locations = [
+  "Làng Hy Vọng, Đà Nẵng",
+  "Trung tâm Bảo trợ xã hội Đà Nẵng",
+  "Mái ấm Hướng Dương, Đà Nẵng",
+  "Làng trẻ SOS Đà Nẵng",
+  "Maison Chance (Nhà May Mắn) Đà Nẵng",
+  "Chùa Quang Châu, Đà Nẵng",
+  "Trung tâm phụng dưỡng người già và trẻ em khó khăn",
+  "Thôn Tà Lang, Hòa Bắc",
+  "Thôn Giàn Bí, Hòa Bắc",
+  "Xã Hòa Phú, Hòa Vang",
+  "Xã Hòa Nhơn, Hòa Vang",
+  "Xã Hòa Phong, Hòa Vang",
+  "Xã Hòa Khương, Hòa Vang",
+  "Xã Hòa Tiến, Hòa Vang",
+  "Xã Mà Cooih, Đông Giang",
+  "Xã A Ting, Đông Giang",
+  "Xã Tư, Đông Giang",
+  "Xã A Nông, Tây Giang",
+  "Xã A Xan, Tây Giang",
+  "Xã A Tiêng, Tây Giang",
+  "Xã Chà Vàl, Nam Giang",
+  "Xã La Êê, Nam Giang"
+];
+const jobTypes = ["Bán thời gian", "Toàn thời gian", "Tình nguyện", "Hợp đồng", "Thực tập"];
 const dutyTitles = [
-  "Environmental Education Volunteer", "Tree Planting Coordinator", "After-School Tutor", "Curriculum Developer",
-  "Health Camp Volunteer", "Digital Literacy Instructor", "Community Outreach Specialist", "Youth Mentor",
-  "Food Bank Volunteer", "Homeless Shelter Assistant", "Animal Shelter Helper", "Senior Care Companion",
-  "Library Assistant", "Park Cleanup Coordinator", "Disaster Relief Volunteer", "Fundraising Coordinator",
-  "Event Organizer", "Social Media Manager", "Grant Writer", "Research Assistant",
-  "Teaching Assistant", "Mentor Program Coordinator", "Workshop Facilitator", "Community Garden Manager",
-  "Recycling Program Leader", "Beach Cleanup Organizer", "Reading Program Volunteer", "STEM Tutor",
-  "Art Program Instructor", "Music Teacher Volunteer"
+  "Tổ chức lớp học kỹ năng cho trẻ em Làng Hy Vọng",
+  "Hỗ trợ chăm sóc trẻ đặc biệt tại Trung tâm Bảo trợ",
+  "Phụ trách sinh hoạt cuối tuần tại Mái ấm Hướng Dương",
+  "Kèm cặp học tập cho trẻ Làng SOS Đà Nẵng",
+  "Tổ chức hoạt động thể chất cho trẻ Maison Chance",
+  "Hỗ trợ bếp ăn và dinh dưỡng tại Chùa Quang Châu",
+  "Thăm hỏi và chăm sóc người già neo đơn",
+  "Tập huấn kỹ năng phòng chống thiên tai ở Hòa Bắc",
+  "Hướng dẫn phân loại rác và bảo vệ suối ở Tà Lang",
+  "Tổ chức sân chơi thiếu nhi tại Giàn Bí",
+  "Khảo sát nhu cầu nước sạch tại Hòa Phú",
+  "Tập huấn kỹ năng số cho thanh thiếu niên Hòa Nhơn",
+  "Câu lạc bộ đọc sách lưu động ở Hòa Phong",
+  "Ngày hội sức khỏe cộng đồng tại Hòa Khương",
+  "Hỗ trợ tổ chức phiên chợ xanh tại Hòa Tiến",
+  "Khuyến nông và vườn mẫu tại Mà Cooih",
+  "Tập huấn trồng rau sạch ở A Ting",
+  "Lớp tiếng Việt cho trẻ em Xã Tư",
+  "Phòng chống tảo hôn tại A Nông",
+  "Tổ chức giải bóng đá giao lưu tại A Xan",
+  "Câu lạc bộ thiếu nhi cuối tuần ở A Tiêng",
+  "Tuyên truyền sức khỏe sinh sản tại Chà Vàl",
+  "Hỗ trợ sửa chữa nhà văn hóa tại La Êê"
 ];
 const dutyDescriptions = [
-  "Help educate children and adults about environmental conservation through workshops and awareness campaigns.",
-  "Lead tree planting initiatives in urban areas and coordinate with local communities.",
-  "Provide one-on-one and group tutoring sessions for elementary and middle school students.",
-  "Develop educational curricula and create lesson plans for various subjects.",
-  "Assist in organizing and running health camps for underserved communities.",
-  "Teach basic computer and internet skills to seniors and adults.",
-  "Engage with local communities to promote social programs and initiatives.",
-  "Mentor young people and provide guidance for personal and professional development.",
-  "Help distribute food and organize food bank operations.",
-  "Assist in daily operations of homeless shelters and support residents.",
-  "Care for animals and help with adoption processes at animal shelters.",
-  "Provide companionship and support to elderly community members.",
-  "Help organize books and assist visitors at local libraries.",
-  "Coordinate park cleanup events and environmental conservation efforts.",
-  "Provide support during natural disasters and emergency situations.",
-  "Organize fundraising events and campaigns for non-profit organizations.",
-  "Plan and execute community events and gatherings.",
-  "Manage social media presence and create engaging content.",
-  "Write grant proposals and funding applications for organizations.",
-  "Assist with research projects and data collection.",
-  "Support teachers in classrooms and help with student activities.",
-  "Coordinate mentorship programs and match mentors with mentees.",
-  "Facilitate workshops on various topics for community members.",
-  "Manage community gardens and teach sustainable gardening practices.",
-  "Lead recycling programs and educate about waste management.",
-  "Organize beach cleanup events and marine conservation efforts.",
-  "Volunteer in reading programs to improve literacy rates.",
-  "Tutor students in Science, Technology, Engineering, and Mathematics.",
-  "Instruct art classes and help with creative projects.",
-  "Teach music lessons and organize musical performances."
+  "Tuyển tình nguyện viên phối hợp giáo viên tổ chức các lớp kỹ năng sống, STEM đơn giản và trò chơi sáng tạo cho trẻ em mồ côi tại Làng Hy Vọng. Yêu cầu soạn giáo án ngắn, chuẩn bị dụng cụ và đảm bảo an toàn cho 30-40 em mỗi buổi.",
+  "Cần đội ngũ hỗ trợ chăm sóc trẻ khuyết tật và hoàn cảnh đặc biệt tại Trung tâm Bảo trợ xã hội Đà Nẵng: hỗ trợ ăn uống, vật lý trị liệu nhẹ, trò chuyện giúp trẻ ổn định tâm lý; được hướng dẫn bởi nhân viên công tác xã hội.",
+  "Tổ chức sinh hoạt cuối tuần cho 25 em tại Mái ấm Hướng Dương: trò chơi vận động, kể chuyện, gấp giấy, và dạy kỹ năng cá nhân (giữ vệ sinh, sắp xếp đồ dùng). Chuẩn bị kịch bản chi tiết và phân công an toàn.",
+  "Hỗ trợ kèm cặp toán, tiếng Việt, tiếng Anh cơ bản cho trẻ Làng SOS Đà Nẵng (tiểu học - THCS). Mỗi ca 2 giờ, tối đa 5 em/nhóm; xây dựng kế hoạch học tập cá nhân, báo cáo tiến độ cho mẹ/nhân viên làng.",
+  "Thiết kế hoạt động thể chất và trị liệu vận động nhẹ (bóng, kéo co, yoga cơ bản) cho trẻ khuyết tật nhẹ tại Maison Chance. Cần lên khung an toàn, có ít nhất 2 người hỗ trợ giám sát mỗi nhóm 8-10 em.",
+  "Phụ bếp, chia khẩu phần và sắp xếp bữa trưa cho 120 suất ăn tại Chùa Quang Châu. Đảm bảo an toàn thực phẩm, vệ sinh khu bếp, hỗ trợ rửa dụng cụ và phân phát suất ăn cho người khó khăn quanh khu vực.",
+  "Thăm hỏi, trò chuyện, hỗ trợ đo huyết áp, xếp thuốc theo hướng dẫn cho người già neo đơn tại Trung tâm phụng dưỡng; tổ chức hoạt động nhẹ như đọc báo, hát, tập tay chân. Cần thái độ kiên nhẫn và tôn trọng.",
+  "Phối hợp Đoàn xã tập huấn kiến thức phòng chống lũ quét, dựng mô hình thoát nạn và diễn tập sơ cứu tại Hòa Bắc. Chuẩn bị tài liệu minh họa, trò chơi tương tác cho học sinh tiểu học và THCS.",
+  "Hướng dẫn phân loại rác tại nguồn, thu gom rác suối và ghi nhận điểm ô nhiễm ở Tà Lang. Cần lập bản đồ điểm xả rác, chụp ảnh trước-sau, tuyên truyền hộ dân bằng tờ rơi và buổi nói chuyện ngắn.",
+  "Tổ chức sân chơi cuối tuần cho thiếu nhi thôn Giàn Bí: trò chơi dân gian, vẽ tranh, chiếu phim ngắn. Chuẩn bị loa, máy chiếu, phần thưởng nhỏ; ghi nhận danh sách trẻ tham gia và đánh giá an toàn.",
+  "Khảo sát 30 hộ dân ở Hòa Phú về nhu cầu nước sạch, kiểm tra giếng và bồn chứa, tổng hợp báo cáo ngắn đề xuất giải pháp. Hướng dẫn hộ dân vệ sinh bồn nước và điểm lấy nước chung.",
+  "Tập huấn kỹ năng số cho thanh thiếu niên Hòa Nhơn: tạo email, bảo mật tài khoản, sử dụng công cụ học tập trực tuyến. Mỗi buổi 20-25 học viên, cần máy chiếu và 1-2 laptop dự phòng.",
+  "Tổ chức câu lạc bộ đọc sách lưu động tại Hòa Phong: chọn sách thiếu nhi, hướng dẫn đọc to, thảo luận ngắn và ghi nhật ký đọc. Gợi ý góc đọc yên tĩnh, trải thảm, xếp sách gọn gàng sau buổi.",
+  "Ngày hội sức khỏe cộng đồng tại Hòa Khương: hỗ trợ đo huyết áp, cân nặng, hướng dẫn dinh dưỡng, phát tờ rơi về phòng chống sốt xuất huyết. Phối hợp trạm y tế, chuẩn bị bàn ghế và nước uống.",
+  "Hỗ trợ tổ chức phiên chợ xanh tại Hòa Tiến: phân khu gian hàng nông sản, thu gom rác, điều phối khách, thống kê lượng hàng bán. Nhắc nhở giảm túi nilon, ưu tiên dùng lá, hộp giấy.",
+  "Khuyến nông và vườn mẫu tại Mà Cooih: cùng người dân dựng luống, ươm giống rau ngắn ngày, lắp hệ thống tưới thủ công. Ghi chép nhật ký gieo trồng và chụp ảnh tiến độ.",
+  "Tập huấn trồng rau sạch ở A Ting: trình bày quy trình ủ phân hữu cơ, cách luân canh, phòng sâu bằng biện pháp sinh học. Tổ chức thực hành nhỏ tại vườn hộ gia đình.",
+  "Lớp tiếng Việt cho 25 trẻ em Xã Tư: ôn chữ cái, ghép vần, luyện đọc truyện tranh. Thiết kế trò chơi chữ, thẻ flashcard, theo dõi tiến bộ hằng tuần.",
+  "Phòng chống tảo hôn tại A Nông: chiếu video tuyên truyền, thảo luận nhóm với phụ huynh và thanh thiếu niên, phát tờ rơi bằng tiếng Kinh và hướng dẫn cán bộ thôn tiếp tục truyền thông.",
+  "Tổ chức giải bóng đá giao lưu tại A Xan: chuẩn bị dụng cụ, kẻ sân, chia đội, đảm bảo nước uống và sơ cứu cơ bản. Ghi nhận tinh thần fair-play và chụp ảnh tư liệu.",
+  "Câu lạc bộ thiếu nhi cuối tuần ở A Tiêng: kể chuyện dân gian Cơ Tu, vẽ tranh, học hát. Mỗi buổi 90 phút, cần loa nhỏ và giấy màu, bút sáp.",
+  "Tuyên truyền sức khỏe sinh sản tại Chà Vàl: phối hợp trạm y tế, chuẩn bị slide, tình huống thảo luận, phát tờ rơi; tách nhóm nam/nữ vị thành niên để trao đổi riêng.",
+  "Hỗ trợ sửa chữa nhà văn hóa tại La Êê: sơn lại tường, thay bóng đèn, sắp xếp bàn ghế, lắp bảng tin. Đảm bảo an toàn lao động, mang đồ bảo hộ cơ bản."
 ];
 const requirements = [
-  ["Passion for the cause", "Good communication skills", "Ability to work with diverse groups"],
-  ["Experience in coordination", "Leadership skills", "Physical fitness"],
-  ["Teaching experience preferred", "Patience and empathy", "Background check required"],
-  ["Degree in related field", "Strong writing skills", "Research experience"],
-  ["Interest in healthcare", "Good interpersonal skills", "Flexible schedule"],
-  ["Strong computer skills", "Teaching experience", "Patience with learners"],
-  ["Community engagement experience", "Excellent communication", "Cultural sensitivity"],
-  ["Mentoring experience", "Good listening skills", "Commitment to youth development"],
-  ["Physical ability to lift", "Teamwork skills", "Compassion for others"],
-  ["Empathy and understanding", "Ability to work in challenging environments", "Flexible hours"]
+  ["Yêu thích hoạt động cộng đồng", "Giao tiếp tốt với trẻ", "Tuân thủ kịch bản an toàn"],
+  ["Kiên nhẫn với trẻ đặc biệt", "Biết lắng nghe", "Tuân thủ hướng dẫn của nhân viên trung tâm"],
+  ["Kỹ năng tổ chức trò chơi", "Lên kế hoạch chi tiết", "Tinh thần trách nhiệm"],
+  ["Kiến thức cơ bản Toán/Ngữ văn/Anh", "Giải thích dễ hiểu", "Báo cáo tiến độ rõ ràng"],
+  ["Hiểu cơ bản về vận động trị liệu", "Cẩn thận quan sát", "Làm việc nhóm tốt"],
+  ["Giữ vệ sinh an toàn thực phẩm", "Chịu khó, gọn gàng", "Lịch sự với người khó khăn"],
+  ["Thái độ tôn trọng người cao tuổi", "Có thể đo huyết áp cơ bản", "Biết trao đổi nhẹ nhàng"],
+  ["Kỹ năng truyền đạt đơn giản", "Không ngại di chuyển địa hình đồi núi", "Tinh thần kỷ luật"],
+  ["Biết phân loại rác", "Có thể ghi chép và chụp ảnh", "Khả năng vận động nhẹ ngoài trời"],
+  ["Yêu trẻ, biết tạo không khí vui", "Quản lý thời gian tốt", "Chú ý an toàn khi đông trẻ"],
+  ["Biết phỏng vấn hộ dân", "Tổng hợp số liệu", "Giao tiếp lịch sự"],
+  ["Kiến thức an toàn số cơ bản", "Trình bày rõ ràng", "Kiên nhẫn hỗ trợ người mới"],
+  ["Yêu sách và đọc to truyền cảm", "Biết hướng dẫn thảo luận", "Sắp xếp không gian gọn gàng"],
+  ["Hiểu cơ bản về sức khỏe cộng đồng", "Có thể hướng dẫn đo huyết áp", "Tương tác thân thiện"],
+  ["Khả năng sắp xếp gian hàng", "Giao tiếp với người dân", "Ý thức bảo vệ môi trường"],
+  ["Sức khỏe tốt", "Chịu khó lao động ngoài trời", "Ghi chép nhật ký vườn"],
+  ["Kiến thức nông nghiệp hữu cơ cơ bản", "Giải thích dễ hiểu", "Hỗ trợ thực hành"],
+  ["Phát âm chuẩn tiếng Việt", "Tạo trò chơi chữ", "Kiên nhẫn với trẻ chậm"],
+  ["Kỹ năng thuyết trình", "Hiểu văn hóa địa phương", "Tôn trọng khác biệt"],
+  ["Tổ chức sự kiện nhỏ", "Hiểu luật chơi cơ bản", "Chủ động xử lý tình huống"],
+  ["Kể chuyện, vẽ tranh", "Tạo không khí thân thiện", "Kiểm soát thời lượng"],
+  ["Kiến thức sức khỏe sinh sản vị thành niên", "Trình bày tế nhị", "Làm việc với cán bộ y tế"],
+  ["Biết sơn sửa cơ bản", "Tuân thủ an toàn lao động", "Phối hợp nhóm"]
 ];
 const organizationNames = [
-  "Green Earth Initiative", "Education for All Foundation", "Community Health Center",
-  "Youth Empowerment Network", "Food Security Alliance", "Animal Welfare Society",
-  "Senior Care Foundation", "Literacy for Everyone", "Environmental Action Group",
-  "Community Development Organization"
+  "Làng Hy Vọng Đà Nẵng",
+  "Trung tâm Bảo trợ xã hội Đà Nẵng",
+  "Mái ấm Hướng Dương",
+  "Làng trẻ SOS Đà Nẵng",
+  "Maison Chance Đà Nẵng",
+  "Chùa Quang Châu",
+  "Trung tâm phụng dưỡng người già và trẻ em khó khăn",
+  "Cộng đồng Hòa Bắc",
+  "Cộng đồng Hòa Vang",
+  "Cộng đồng vùng cao Quảng Nam"
 ];
 const organizationDescriptions = [
-  "A non-profit organization dedicated to environmental conservation and sustainability.",
-  "Committed to providing quality education to underprivileged children.",
-  "Providing free healthcare services and health education to underserved communities.",
-  "Empowering young people through mentorship and skill development programs.",
-  "Fighting hunger and food insecurity in local communities.",
-  "Protecting and caring for animals in need.",
-  "Supporting elderly community members with care and companionship.",
-  "Promoting literacy and education for all ages.",
-  "Leading environmental conservation and sustainability initiatives.",
-  "Supporting community development and social programs."
+  "Nơi chăm sóc và giáo dục trẻ mồ côi, tổ chức lớp kỹ năng sống, hỗ trợ học tập, hướng nghiệp và tạo môi trường an toàn cho các em.",
+  "Cơ sở bảo trợ trẻ em và người yếu thế tại Đà Nẵng, cung cấp dịch vụ chăm sóc, phục hồi chức năng, tư vấn và kết nối nguồn lực xã hội.",
+  "Mái ấm dành cho trẻ em hoàn cảnh đặc biệt, tập trung nuôi dưỡng, dạy kỹ năng tự lập và hỗ trợ hòa nhập cộng đồng.",
+  "Hệ thống gia đình thay thế cho trẻ em mồ côi, đảm bảo giáo dục, chăm sóc toàn diện và các hoạt động phát triển cá nhân.",
+  "Tổ chức hỗ trợ trẻ khuyết tật và hoàn cảnh khó khăn, cung cấp chỗ ở, phục hồi chức năng, dạy nghề và hòa nhập lao động.",
+  "Cơ sở tôn giáo kết hợp hoạt động thiện nguyện: bếp ăn từ thiện, tặng quà, hỗ trợ người vô gia cư và trẻ em thiếu thốn.",
+  "Nơi chăm sóc người già neo đơn và trẻ em khó khăn, chú trọng sức khỏe tinh thần, dinh dưỡng và kết nối tình nguyện viên.",
+  "Mạng lưới cộng đồng ở Hòa Bắc, tập trung bảo tồn văn hóa Cơ Tu, bảo vệ môi trường và phát triển sinh kế bền vững.",
+  "Cộng đồng Hòa Vang với nhiều chương trình y tế, giáo dục, bảo vệ môi trường và phát triển nông nghiệp sạch.",
+  "Mạng lưới hỗ trợ các xã miền núi Quảng Nam: giáo dục, y tế dự phòng, giảm nghèo, bảo tồn văn hóa Cơ Tu - Ve."
 ];
 const websites = [
-  "https://greenearth.org", "https://educationforall.org", "https://communityhealth.org",
-  "https://youthempowerment.org", "https://foodsecurity.org", "https://animalwelfare.org",
-  "https://seniorcare.org", "https://literacyforall.org", "https://environmentalaction.org",
-  "https://communitydev.org"
+  "https://langhyvong.example.org",
+  "https://baotroxahoi.danang.example.org",
+  "https://huongduong.example.org",
+  "https://sosdanang.example.org",
+  "https://maisonchance.example.org",
+  "https://quangchau.example.org",
+  "https://phungduong.example.org",
+  "https://hoabac.example.org",
+  "https://hoavang.example.org",
+  "https://quangnamcao.example.org"
 ];
 const postContents = [
-  "Great session today! Thanks to everyone who participated.",
-  "Looking forward to our next meeting. Don't forget to bring your ideas!",
-  "Amazing progress this week. Keep up the excellent work!",
-  "Reminder: Our event is coming up soon. Please confirm your attendance.",
-  "Thank you all for your dedication and hard work.",
-  "Excited to share some updates from our recent activities.",
-  "Let's continue making a positive impact in our community!",
-  "Great to see everyone at today's gathering.",
-  "Don't forget to submit your reports by Friday.",
-  "Congratulations to everyone on completing the project!"
+  "Cảm ơn mọi người đã tham gia buổi sinh hoạt hôm nay, các em rất hào hứng!",
+  "Cuối tuần này chúng ta dạy kỹ năng phòng chống đuối nước, nhớ mang áo mưa nhẹ.",
+  "Nhóm đã hoàn thành 20 suất quà cho bà con, mai sẽ phát tại Hòa Bắc.",
+  "Các em ở Làng Hy Vọng tiến bộ rõ rệt, cảm ơn thầy cô và TNV.",
+  "Ngày hội đọc sách lưu động thành công, 35 em tham gia và mượn sách về nhà.",
+  "Đã lắp xong 5 bồn rửa tay tại trường, nhờ cả nhà kiểm tra giúp.",
+  "Hội thảo phòng chống tảo hôn rất sôi nổi, nhiều câu hỏi thực tế.",
+  "Chuyến khảo sát nước sạch Hòa Phú hoàn thành, sẽ tổng hợp báo cáo.",
+  "Tập huấn trồng rau hữu cơ tại A Ting có 18 hộ tham gia, phản hồi tốt.",
+  "Nhà văn hóa La Êê đã sơn mới xong mặt trước, nhìn sáng sủa hơn nhiều."
 ];
 const commentContents = [
-  "Great work everyone!", "Looking forward to the next event.", "Thanks for organizing this!",
-  "Count me in!", "This is amazing!", "Keep up the good work!", "I'm excited to participate!",
-  "Thanks for the update!", "This is very helpful.", "Great initiative!"
+  "Công nhận buổi hôm nay vui quá!",
+  "Mình tham gia thêm ca chiều nhé.",
+  "Cảm ơn mọi người đã chuẩn bị rất kỹ.",
+  "Nhờ gửi thêm hình ảnh để báo cáo.",
+  "Các em chăm chỉ, đáng khen lắm.",
+  "Tài liệu phòng chống tảo hôn rất dễ hiểu.",
+  "Tuần sau mình mang thêm sách truyện.",
+  "Sân chơi cần thêm bóng, mình sẽ mua.",
+  "Rất vui khi thấy bà con ủng hộ.",
+  "Chúng ta cố gắng duy trì đều nhé!"
 ];
 const imageUrls = [
-  "https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=800",
-  "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=800",
-  "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=800",
-  "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=800",
-  "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800",
-  "https://images.unsplash.com/photo-1552664730-d307ca884978?w=800",
-  "https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=800",
-  "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=800"
+  "https://archive.veo.com.vn/tour/phat-trien-du-lich-cong-dong-tai-ta-van-sapa/36469903110_7abe15aa4f_k-2/",
+  "https://archive.veo.com.vn/tour/du-lich-cong-dong-lang-van-hoa-khmer-tra-vinh/ve%CC%83-scaled-2/",
+  "https://archive.veo.com.vn/tour/phat-trien-du-lich-cong-dong-tai-van-ho-son-la/processed-with-vsco-with-6-preset-3/",
+  "https://archive.veo.com.vn/tour/phat-trien-du-lich-cong-dong-tai-lo-lo-chai/du-lich-cong-dong-tai-ha-giang-1/",
+  "https://archive.veo.com.vn/tour/phat-trien-du-lich-cong-dong-tai-ta-van-sapa/36469903110_7abe15aa4f_k-2/",
+  "https://archive.veo.com.vn/tour/phat-trien-du-lich-cong-dong-tai-lo-lo-chai/du-lich-cong-dong-tai-ha-giang-1/",
+  "https://archive.veo.com.vn/tour/du-lich-cong-dong-da-phuoc-an-giang/51013651255_a22c6b0d8e_k/",
+  "https://archive.veo.com.vn/tour/du-lich-tinh-nguyen-mai-chau/mai-cha%CC%82u/",
+  "https://archive.veo.com.vn/tour/du-lich-tinh-nguyen-ma-bo-lam-dong/processed-with-vsco-with-6-preset-2/"
 ];
 
 // Helper functions
@@ -182,7 +246,7 @@ const seedData = async () => {
       do {
         firstName = getRandomElement(firstNames);
         lastName = getRandomElement(lastNames);
-        email = `${firstName.toLowerCase()}.${lastName.toLowerCase()}${i + 1}@example.com`;
+        email = `${firstName.toLowerCase()}.${lastName.toLowerCase()}${i + 1}@gmail.com`;
         attempts++;
       } while (usedEmails.has(email) && attempts < 100);
 

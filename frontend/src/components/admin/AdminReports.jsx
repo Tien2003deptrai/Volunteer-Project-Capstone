@@ -39,7 +39,7 @@ const AdminReports = () => {
       }
     } catch (error) {
       console.log(error);
-      toast.error("Failed to load reports");
+      toast.error("Không tải được danh sách báo cáo");
     } finally {
       setLoading(false);
     }
@@ -53,11 +53,11 @@ const AdminReports = () => {
         { withCredentials: true }
       );
       if (res.data.success) {
-        toast.success("Report status updated");
+        toast.success("Cập nhật trạng thái báo cáo thành công");
         fetchReports();
       }
     } catch (error) {
-      toast.error(error.response?.data?.message || "Failed to update status");
+      toast.error(error.response?.data?.message || "Cập nhật trạng thái thất bại");
     }
   };
 
@@ -73,6 +73,21 @@ const AdminReports = () => {
         return 'bg-gray-100 text-gray-700';
       default:
         return 'bg-gray-100 text-gray-700';
+    }
+  };
+
+  const getStatusLabel = (status) => {
+    switch (status) {
+      case 'pending':
+        return 'Đang chờ';
+      case 'reviewed':
+        return 'Đã xem xét';
+      case 'resolved':
+        return 'Đã giải quyết';
+      case 'dismissed':
+        return 'Đã bỏ qua';
+      default:
+        return status;
     }
   };
 
@@ -92,8 +107,8 @@ const AdminReports = () => {
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Reports Management</h1>
-            <p className="text-gray-600 mt-2">Review and manage reported content</p>
+            <h1 className="text-3xl font-bold text-gray-900">Quản lý báo cáo</h1>
+            <p className="text-gray-600 mt-2">Xem và xử lý nội dung bị báo cáo</p>
           </div>
         </div>
 
@@ -102,12 +117,12 @@ const AdminReports = () => {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Reported By</TableHead>
-                <TableHead>Reason</TableHead>
-                <TableHead>Description</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Created</TableHead>
-                <TableHead className="text-right">Actions</TableHead>
+                <TableHead>Người báo cáo</TableHead>
+                <TableHead>Lý do</TableHead>
+                <TableHead>Mô tả</TableHead>
+                <TableHead>Trạng thái</TableHead>
+                <TableHead>Ngày tạo</TableHead>
+                <TableHead className="text-right">Thao tác</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -128,7 +143,7 @@ const AdminReports = () => {
                     </TableCell>
                     <TableCell>
                       <Badge className={getStatusColor(report.status)}>
-                        {report.status}
+                        {getStatusLabel(report.status)}
                       </Badge>
                     </TableCell>
                     <TableCell className="text-sm text-gray-600">
@@ -141,13 +156,13 @@ const AdminReports = () => {
                           onValueChange={(value) => handleStatusUpdate(report._id, value)}
                         >
                           <SelectTrigger className="w-32">
-                            <SelectValue />
+                            <SelectValue placeholder="Chọn trạng thái" />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="pending">Pending</SelectItem>
-                            <SelectItem value="reviewed">Reviewed</SelectItem>
-                            <SelectItem value="resolved">Resolved</SelectItem>
-                            <SelectItem value="dismissed">Dismissed</SelectItem>
+                            <SelectItem value="pending">Đang chờ</SelectItem>
+                            <SelectItem value="reviewed">Đã xem xét</SelectItem>
+                            <SelectItem value="resolved">Đã giải quyết</SelectItem>
+                            <SelectItem value="dismissed">Đã bỏ qua</SelectItem>
                           </SelectContent>
                         </Select>
                       </div>
@@ -157,7 +172,7 @@ const AdminReports = () => {
               ) : (
                 <TableRow>
                   <TableCell colSpan={7} className="text-center py-8 text-gray-500">
-                    No reports found
+                    Không tìm thấy báo cáo
                   </TableCell>
                 </TableRow>
               )}

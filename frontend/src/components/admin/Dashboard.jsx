@@ -41,7 +41,7 @@ const Dashboard = () => {
       }
     } catch (error) {
       console.log(error);
-      toast.error("Failed to load dashboard data");
+      toast.error("Không tải được dữ liệu bảng điều khiển");
     } finally {
       setLoading(false);
     }
@@ -59,56 +59,56 @@ const Dashboard = () => {
 
   const statCards = [
     {
-      title: 'Total Users',
+      title: 'Tổng người dùng',
       value: stats?.totalUsers || 0,
       icon: Users,
       color: 'bg-blue-500',
       link: '/admin/users'
     },
     {
-      title: 'Total Duties',
+      title: 'Tổng hoạt động',
       value: stats?.totalDuties || 0,
       icon: Briefcase,
       color: 'bg-green-500',
       link: '/admin/duties'
     },
     {
-      title: 'Organizations',
+      title: 'Tổ chức',
       value: stats?.totalOrganizations || 0,
       icon: Building2,
       color: 'bg-purple-500',
       link: '/admin/organizations'
     },
     {
-      title: 'Groups',
+      title: 'Nhóm',
       value: stats?.totalGroups || 0,
       icon: MessageSquare,
       color: 'bg-orange-500',
       link: '/admin/groups'
     },
     {
-      title: 'Posts',
+      title: 'Bài viết',
       value: stats?.totalPosts || 0,
       icon: FileText,
       color: 'bg-pink-500',
       link: '/admin/posts'
     },
     {
-      title: 'Pending Reports',
+      title: 'Báo cáo chờ duyệt',
       value: stats?.pendingReports || 0,
       icon: Flag,
       color: 'bg-red-500',
       link: '/admin/reports'
     },
     {
-      title: 'Applications',
+      title: 'Đơn đăng ký',
       value: stats?.totalApplications || 0,
       icon: UserCheck,
       color: 'bg-indigo-500',
       link: '/admin/duties'
     },
     {
-      title: 'Admins',
+      title: 'Quản trị viên',
       value: stats?.totalAdmins || 0,
       icon: TrendingUp,
       color: 'bg-teal-500',
@@ -121,8 +121,8 @@ const Dashboard = () => {
       <div className="space-y-6">
         {/* Page Header */}
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
-          <p className="text-gray-600 mt-2">Welcome to the admin panel</p>
+          <h1 className="text-3xl font-bold text-gray-900">Bảng điều khiển</h1>
+          <p className="text-gray-600 mt-2">Chào mừng bạn đến trang quản trị</p>
         </div>
 
         {/* Stats Grid */}
@@ -156,7 +156,7 @@ const Dashboard = () => {
           {/* Recent Duties */}
           <Card>
             <CardHeader>
-              <CardTitle>Recent Duties</CardTitle>
+              <CardTitle>Hoạt động gần đây</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
@@ -178,7 +178,7 @@ const Dashboard = () => {
                     </div>
                   ))
                 ) : (
-                  <p className="text-gray-500 text-center py-4">No recent duties</p>
+                  <p className="text-gray-500 text-center py-4">Chưa có hoạt động gần đây</p>
                 )}
               </div>
               <Button
@@ -186,7 +186,7 @@ const Dashboard = () => {
                 className="w-full mt-4"
                 onClick={() => navigate('/admin/duties')}
               >
-                View All Duties
+                Xem tất cả hoạt động
               </Button>
             </CardContent>
           </Card>
@@ -194,7 +194,7 @@ const Dashboard = () => {
           {/* Recent Applications */}
           <Card>
             <CardHeader>
-              <CardTitle>Recent Applications</CardTitle>
+              <CardTitle>Đơn đăng ký gần đây</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
@@ -209,19 +209,23 @@ const Dashboard = () => {
                           {app.applicant?.fullname}
                         </p>
                         <p className="text-sm text-gray-600 truncate">
-                          Applied for: {app.duty?.tittle}
+                          Ứng tuyển: {app.duty?.tittle}
                         </p>
                         <span className={`inline-block mt-1 px-2 py-1 text-xs rounded-full ${app.status === 'accepted' ? 'bg-green-100 text-green-700' :
                           app.status === 'rejected' ? 'bg-red-100 text-red-700' :
                             'bg-yellow-100 text-yellow-700'
                           }`}>
-                          {app.status}
+                          {app.status === 'accepted'
+                            ? 'Đã duyệt'
+                            : app.status === 'rejected'
+                              ? 'Từ chối'
+                              : 'Đang chờ'}
                         </span>
                       </div>
                     </div>
                   ))
                 ) : (
-                  <p className="text-gray-500 text-center py-4">No recent applications</p>
+                  <p className="text-gray-500 text-center py-4">Chưa có đơn đăng ký gần đây</p>
                 )}
               </div>
               <Button
@@ -229,7 +233,7 @@ const Dashboard = () => {
                 className="w-full mt-4"
                 onClick={() => navigate('/admin/duties')}
               >
-                View All Applications
+                Xem tất cả đơn đăng ký
               </Button>
             </CardContent>
           </Card>

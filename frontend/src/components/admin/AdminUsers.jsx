@@ -45,7 +45,7 @@ const AdminUsers = () => {
       }
     } catch (error) {
       console.log(error);
-      toast.error("Failed to load users");
+      toast.error("Không tải được danh sách người dùng");
     } finally {
       setLoading(false);
     }
@@ -57,13 +57,13 @@ const AdminUsers = () => {
         withCredentials: true
       });
       if (res.data.success) {
-        toast.success("User deleted successfully");
+        toast.success("Xóa người dùng thành công");
         setShowDeleteDialog(false);
         setSelectedUser(null);
         fetchUsers();
       }
     } catch (error) {
-      toast.error(error.response?.data?.message || "Failed to delete user");
+      toast.error(error.response?.data?.message || "Xóa người dùng thất bại");
     }
   };
 
@@ -88,8 +88,8 @@ const AdminUsers = () => {
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Users Management</h1>
-            <p className="text-gray-600 mt-2">Manage all platform users</p>
+            <h1 className="text-3xl font-bold text-gray-900">Quản lý người dùng</h1>
+            <p className="text-gray-600 mt-2">Quản lý tất cả người dùng trên nền tảng</p>
           </div>
         </div>
 
@@ -98,7 +98,7 @@ const AdminUsers = () => {
           <div className="relative flex-1 max-w-md">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
             <Input
-              placeholder="Search users by name or email..."
+              placeholder="Tìm kiếm theo tên hoặc email..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="pl-10"
@@ -111,12 +111,12 @@ const AdminUsers = () => {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>User</TableHead>
+                <TableHead>Người dùng</TableHead>
                 <TableHead>Email</TableHead>
-                <TableHead>Phone</TableHead>
-                <TableHead>Role</TableHead>
-                <TableHead>Joined</TableHead>
-                <TableHead className="text-right">Actions</TableHead>
+                <TableHead>Điện thoại</TableHead>
+                <TableHead>Vai trò</TableHead>
+                <TableHead>Tham gia</TableHead>
+                <TableHead className="text-right">Thao tác</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -145,7 +145,7 @@ const AdminUsers = () => {
                         ? 'bg-purple-100 text-purple-700'
                         : 'bg-blue-100 text-blue-700'
                         }`}>
-                        {user.role}
+                        {user.role === 'admin' ? 'Quản trị' : 'Người dùng'}
                       </span>
                     </TableCell>
                     <TableCell>
@@ -169,7 +169,7 @@ const AdminUsers = () => {
               ) : (
                 <TableRow>
                   <TableCell colSpan={6} className="text-center py-8 text-gray-500">
-                    No users found
+                    Không tìm thấy người dùng
                   </TableCell>
                 </TableRow>
               )}
@@ -181,9 +181,9 @@ const AdminUsers = () => {
         <Dialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>Delete User</DialogTitle>
+              <DialogTitle>Xóa người dùng</DialogTitle>
               <DialogDescription>
-                Are you sure you want to delete {selectedUser?.fullname}? This action cannot be undone.
+                Bạn có chắc muốn xóa {selectedUser?.fullname}? Hành động này không thể hoàn tác.
               </DialogDescription>
             </DialogHeader>
             <div className="flex justify-end gap-3 mt-4">
@@ -194,13 +194,13 @@ const AdminUsers = () => {
                   setSelectedUser(null);
                 }}
               >
-                Cancel
+                Hủy
               </Button>
               <Button
                 variant="destructive"
                 onClick={handleDelete}
               >
-                Delete
+                Xóa
               </Button>
             </div>
           </DialogContent>
