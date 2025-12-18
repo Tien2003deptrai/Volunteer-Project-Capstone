@@ -61,6 +61,7 @@ export const getAllUsers = async (req, res) => {
   try {
     const users = await User.find({ role: 'user' })
       .select('-password')
+      .populate('profile')
       .sort({ createdAt: -1 });
 
     return res.status(200).json({
@@ -202,14 +203,57 @@ export const deletePostAdmin = async (req, res) => {
 export const getAllGroups = async (req, res) => {
   try {
     const groups = await Group.find()
-      .populate('duty', 'tittle description')
+      .populate('duty', 'tittle description location')
       .populate('members', 'fullname email profile.profilePhoto')
       .populate('created_by', 'fullname email')
       .sort({ createdAt: -1 });
 
+    // For each group, get pending applications count and latest application
+    const groupsWithApplicationData = await Promise.all(
+      groups.map(async (group) => {
+        if (!group.duty) {
+          return {
+            ...group.toObject(),
+            pendingApplicationsCount: 0,
+            latestApplication: null
+          };
+        }
+
+        const pendingCount = await Application.countDocuments({
+          duty: group.duty._id,
+          status: 'pending'
+        });
+
+        // Get the latest pending application
+        const latestApplication = await Application.findOne({
+          duty: group.duty._id,
+          status: 'pending'
+        })
+          .populate('applicant', 'fullname email profile.profilePhoto')
+          .sort({ createdAt: -1 })
+          .limit(1);
+
+        return {
+          ...group.toObject(),
+          pendingApplicationsCount: pendingCount,
+          latestApplication: latestApplication
+        };
+      })
+    );
+
+    // Sort by latest application date (most recent first), then by creation date
+    groupsWithApplicationData.sort((a, b) => {
+      if (a.latestApplication && b.latestApplication) {
+        return new Date(b.latestApplication.createdAt) - new Date(a.latestApplication.createdAt);
+      }
+      if (a.latestApplication) return -1;
+      if (b.latestApplication) return 1;
+      return new Date(b.createdAt) - new Date(a.createdAt);
+    });
+
     return res.status(200).json({
       success: true,
-      groups
+      groups: groupsWithApplicationData
     });
   } catch (error) {
     console.log(error);

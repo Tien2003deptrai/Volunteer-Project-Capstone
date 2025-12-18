@@ -25,7 +25,7 @@ import {
 import { Briefcase, Loader2, MapPin, Clock, Users, Award, FileText } from 'lucide-react';
 
 /* eslint-disable react/prop-types */
-const PostDutyModal = ({ open, onOpenChange, onSuccess }) => {
+const PostDutyModal = ({ open, onOpenChange, onSuccess, dutyToEdit = null }) => {
   const [input, setInput] = useState({
     tittle: '',
     description: '',
@@ -39,22 +39,41 @@ const PostDutyModal = ({ open, onOpenChange, onSuccess }) => {
   });
   const [loading, setLoading] = useState(false);
   const { organizations } = useSelector((store) => store.organization);
+  const isEditMode = !!dutyToEdit;
 
   useEffect(() => {
     if (open) {
-      setInput({
-        tittle: '',
-        description: '',
-        workDuration: '',
-        requirements: '',
-        location: '',
-        jobType: '',
-        experienceLevel: '',
-        position: '',
-        organizationId: ''
-      });
+      if (dutyToEdit) {
+        // Populate form with duty data for editing
+        setInput({
+          tittle: dutyToEdit.tittle || '',
+          description: dutyToEdit.description || '',
+          workDuration: dutyToEdit.workDuration?.toString() || '',
+          requirements: Array.isArray(dutyToEdit.requirements)
+            ? dutyToEdit.requirements.join(', ')
+            : dutyToEdit.requirements || '',
+          location: dutyToEdit.location || '',
+          jobType: dutyToEdit.jobType || '',
+          experienceLevel: dutyToEdit.experienceLevel?.toString() || '',
+          position: dutyToEdit.position?.toString() || '',
+          organizationId: dutyToEdit.organization?._id || dutyToEdit.organization || ''
+        });
+      } else {
+        // Reset form for new duty
+        setInput({
+          tittle: '',
+          description: '',
+          workDuration: '',
+          requirements: '',
+          location: '',
+          jobType: '',
+          experienceLevel: '',
+          position: '',
+          organizationId: ''
+        });
+      }
     }
-  }, [open]);
+  }, [open, dutyToEdit]);
 
   const changeEventHandler = (e) => {
     setInput({ ...input, [e.target.name]: e.target.value });
@@ -99,15 +118,27 @@ const PostDutyModal = ({ open, onOpenChange, onSuccess }) => {
         requirements: input.requirements ? input.requirements.split(',').map(r => r.trim()).filter(r => r).join(',') : ''
       };
 
-      const res = await axios.post(`${DUTY_API}/post`, payload, {
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        withCredentials: true
-      });
+      let res;
+      if (isEditMode) {
+        // Update existing duty
+        res = await axios.put(`${DUTY_API}/update/${dutyToEdit._id}`, payload, {
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          withCredentials: true
+        });
+      } else {
+        // Create new duty
+        res = await axios.post(`${DUTY_API}/post`, payload, {
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          withCredentials: true
+        });
+      }
 
       if (res.data.success) {
-        toast.success(res.data.message || "Duty posted successfully");
+        toast.success(res.data.message || (isEditMode ? "Duty updated successfully" : "Duty posted successfully"));
         setInput({
           tittle: '',
           description: '',
@@ -123,7 +154,7 @@ const PostDutyModal = ({ open, onOpenChange, onSuccess }) => {
         if (onSuccess) onSuccess();
       }
     } catch (error) {
-      toast.error(error.response?.data?.message || "Error posting duty");
+      toast.error(error.response?.data?.message || (isEditMode ? "Error updating duty" : "Error posting duty"));
     } finally {
       setLoading(false);
     }
@@ -163,9 +194,11 @@ const PostDutyModal = ({ open, onOpenChange, onSuccess }) => {
               <Briefcase className="h-6 w-6 text-white" />
             </div>
             <div>
-              <DialogTitle className="text-2xl">Post New Duty</DialogTitle>
+              <DialogTitle className="text-2xl">
+                {isEditMode ? 'Chỉnh sửa hoạt động' : 'Đăng hoạt động mới'}
+              </DialogTitle>
               <DialogDescription className="mt-1">
-                Create a new volunteer duty opportunity
+                {isEditMode ? 'Cập nhật thông tin hoạt động tình nguyện' : 'Tạo hoạt động tình nguyện mới'}
               </DialogDescription>
             </div>
           </div>
@@ -380,10 +413,10 @@ const PostDutyModal = ({ open, onOpenChange, onSuccess }) => {
               {loading ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Posting...
+                  {isEditMode ? 'Đang cập nhật...' : 'Đang đăng...'}
                 </>
               ) : (
-                'Post Duty'
+                isEditMode ? 'Cập nhật' : 'Đăng hoạt động'
               )}
             </Button>
           </div>

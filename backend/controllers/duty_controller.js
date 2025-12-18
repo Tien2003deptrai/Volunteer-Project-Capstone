@@ -1,4 +1,6 @@
 import { Duty } from "../models/duty_model.js";
+const { Application } = await import("../models/application_model.js");
+const { Group } = await import("../models/group_model.js");
 
 export const postDuty = async (req, res) => {
   try {
@@ -128,8 +130,8 @@ export const getDutyById = async (req, res) => {
 };
 export const getAdminDuties = async (req, res) => {
   try {
-    const adminId = req.id;
-    const duties = await Duty.find({ created_by: adminId })
+    // const adminId = req.id;
+    const duties = await Duty.find({})
       .populate({
         path: "organization",
         select: "name logo address website"
@@ -177,6 +179,105 @@ export const getFilterOptions = async (req, res) => {
     });
   }
 }
+
+// Update duty (admin only)
+export const updateDuty = async (req, res) => {
+  try {
+    const { dutyId } = req.params;
+    const { tittle, description, requirements, workDuration, experience, location, jobType, position, organizationId } = req.body;
+    const adminId = req.id;
+
+    const duty = await Duty.findById(dutyId);
+    if (!duty) {
+      return res.status(404).json({
+        message: "Duty not found",
+        success: false
+      });
+    }
+
+    // Check if the user is the creator of the duty
+    if (duty.created_by.toString() !== adminId) {
+      return res.status(403).json({
+        message: "You are not authorized to update this duty",
+        success: false
+      });
+    }
+
+    // Update duty
+    const updateData = {
+      tittle,
+      description,
+      requirements: requirements ? requirements.split(",") : duty.requirements,
+      workDuration: workDuration ? Number(workDuration) : duty.workDuration,
+      experienceLevel: experience !== undefined ? experience : duty.experienceLevel,
+      location: location || duty.location,
+      jobType: jobType || duty.jobType,
+      position: position !== undefined ? position : duty.position,
+      organization: organizationId || duty.organization
+    };
+
+    const updatedDuty = await Duty.findByIdAndUpdate(
+      dutyId,
+      updateData,
+      { new: true, runValidators: true }
+    ).populate('organization', 'name logo address website');
+
+    return res.status(200).json({
+      message: "Duty updated successfully",
+      success: true,
+      duty: updatedDuty
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      message: "Internal Server Error",
+      success: false
+    });
+  }
+};
+
+// Delete duty (admin only)
+export const deleteDuty = async (req, res) => {
+  try {
+    const { dutyId } = req.params;
+    const adminId = req.id;
+
+    const duty = await Duty.findById(dutyId);
+    if (!duty) {
+      return res.status(404).json({
+        message: "Duty not found",
+        success: false
+      });
+    }
+
+    // Check if the user is the creator of the duty
+    if (duty.created_by.toString() !== adminId) {
+      return res.status(403).json({
+        message: "You are not authorized to delete this duty",
+        success: false
+      });
+    }
+    // Delete all related applications
+    await Application.deleteMany({ duty: dutyId });
+
+    // Delete related group
+    await Group.deleteOne({ duty: dutyId });
+
+    // Delete the duty
+    await Duty.findByIdAndDelete(dutyId);
+
+    return res.status(200).json({
+      message: "Duty and related data deleted successfully",
+      success: true
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      message: "Internal Server Error",
+      success: false
+    });
+  }
+};
 
 // Get upcoming events (within 7 days)
 export const getUpcomingEvents = async (req, res) => {

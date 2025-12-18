@@ -21,13 +21,14 @@ import {
   DialogHeader,
   DialogTitle,
 } from '../ui/dialog';
-import { Search, UserPlus, UserMinus, Users, MessageSquare, CheckCircle2, XCircle, FileText } from 'lucide-react';
+import { Search, UserPlus, UserMinus, Users, MessageSquare, CheckCircle2, XCircle, FileText, Briefcase, Bell, RefreshCw } from 'lucide-react';
 import AdminLayout from './AdminLayout';
 
 const AdminGroups = () => {
   const [groups, setGroups] = useState([]);
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [showAddMemberDialog, setShowAddMemberDialog] = useState(false);
   const [showRemoveMemberDialog, setShowRemoveMemberDialog] = useState(false);
@@ -45,22 +46,40 @@ const AdminGroups = () => {
   useEffect(() => {
     fetchGroups();
     fetchUsers();
+
+    // Auto-refresh every 30 seconds
+    const interval = setInterval(() => {
+      fetchGroups();
+    }, 30000);
+
+    return () => clearInterval(interval);
   }, []);
 
-  const fetchGroups = async () => {
+  const fetchGroups = async (isRefresh = false) => {
     try {
-      setLoading(true);
+      if (isRefresh) {
+        setRefreshing(true);
+      } else {
+        setLoading(true);
+      }
       const res = await axios.get(`${ADMIN_API}/groups`, {
         withCredentials: true
       });
       if (res.data.success) {
         setGroups(res.data.groups);
+        if (isRefresh) {
+          toast.success("Đã cập nhật danh sách nhóm");
+        }
       }
     } catch (error) {
       console.log(error);
       toast.error("Không tải được danh sách nhóm");
     } finally {
-      setLoading(false);
+      if (isRefresh) {
+        setRefreshing(false);
+      } else {
+        setLoading(false);
+      }
     }
   };
 
@@ -218,7 +237,7 @@ const AdminGroups = () => {
         if (selectedGroup?.duty?._id) {
           await fetchApplications(selectedGroup.duty._id);
         }
-        await fetchGroups();
+        await fetchGroups(false); // Refresh without toast
       }
     } catch (error) {
       toast.error(error.response?.data?.message || "Cập nhật trạng thái đơn thất bại");
@@ -238,10 +257,12 @@ const AdminGroups = () => {
     }
   };
 
-  const filteredGroups = groups.filter(group =>
-    group.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    group.duty?.tittle?.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredGroups = groups
+    .filter(group =>
+      group.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      group.duty?.tittle?.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  // Backend already sorts by latest application, no need to sort here
 
   if (loading) {
     return (
@@ -260,8 +281,20 @@ const AdminGroups = () => {
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-3xl font-bold text-gray-900">Quản lý nhóm</h1>
-            <p className="text-gray-600 mt-2">Quản lý tất cả nhóm tình nguyện và thành viên</p>
+            <p className="text-gray-600 mt-2">
+              Quản lý tất cả nhóm tình nguyện và thành viên
+              {groups.length > 0 && ` (${groups.length} nhóm)`}
+            </p>
           </div>
+          <Button
+            onClick={() => fetchGroups(true)}
+            disabled={refreshing}
+            variant="outline"
+            className="border-[#467057] text-[#467057] hover:bg-[#467057] hover:text-white"
+          >
+            <RefreshCw className={`h-4 w-4 mr-2 ${refreshing ? 'animate-spin' : ''}`} />
+            {refreshing ? 'Đang cập nhật...' : 'Làm mới'}
+          </Button>
         </div>
 
         {/* Search */}
@@ -282,9 +315,13 @@ const AdminGroups = () => {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Nhóm</TableHead>
-                <TableHead>Hoạt động</TableHead>
-                <TableHead>Thành viên</TableHead>
+                <TableHead className="bg-gradient-to-r from-[#467057]/10 to-transparent">
+                  <div className="flex items-center gap-2">
+                    <Briefcase className="h-4 w-4 text-[#467057]" />
+                    <span className="font-semibold text-[#467057]">Hoạt động & Nhóm</span>
+                  </div>
+                </TableHead>
+                <TableHead>Số thành viên</TableHead>
                 <TableHead>Người tạo</TableHead>
                 <TableHead>Ngày tạo</TableHead>
                 <TableHead className="text-center">Thao tác</TableHead>
@@ -293,28 +330,64 @@ const AdminGroups = () => {
             <TableBody>
               {filteredGroups.length > 0 ? (
                 filteredGroups.map((group) => (
-                  <TableRow key={group._id} className="hover:bg-gray-50">
-                    <TableCell>
+                  <TableRow
+                    key={group._id}
+                    className={`hover:bg-gray-50 ${group.pendingApplicationsCount > 0 ? 'bg-yellow-50/50' : ''}`}
+                  >
+                    <TableCell className="bg-gradient-to-r from-[#467057]/5 to-transparent">
                       <div className="flex items-center gap-3">
-                        <div className="p-2 bg-[#467057] rounded-lg flex-shrink-0">
-                          <MessageSquare className="h-5 w-5 text-white" />
+                        <div className={`p-2 rounded-lg flex-shrink-0 ${group.pendingApplicationsCount > 0 ? 'bg-yellow-500' : 'bg-[#467057]'}`}>
+                          <Briefcase className="h-5 w-5 text-white" />
                         </div>
-                        <div className="min-w-0">
-                          <p className="font-semibold text-gray-900 truncate">{group.name}</p>
-                          {group.description && (
-                            <p className="text-sm text-gray-500 truncate max-w-xs">{group.description}</p>
+                        <div className="min-w-0 flex-1">
+                          <div className="flex items-center gap-2 mb-1">
+                            <p className="font-semibold text-[#467057] text-base">{group.duty?.tittle || 'N/A'}</p>
+                            {group.pendingApplicationsCount > 0 && (
+                              <div className="flex items-center gap-1 px-2 py-0.5 bg-yellow-500 text-white rounded-full text-xs font-medium flex-shrink-0 animate-pulse">
+                                <Bell className="h-3 w-3" />
+                                <span>{group.pendingApplicationsCount} đơn mới</span>
+                              </div>
+                            )}
+                          </div>
+                          {/* Latest Application Info */}
+                          {group.latestApplication && (
+                            <div className="flex items-center gap-2 mb-1.5 text-xs">
+                              <Avatar className="w-5 h-5 border border-yellow-400">
+                                <AvatarImage src={group.latestApplication.applicant?.profile?.profilePhoto} />
+                              </Avatar>
+                              <span className="text-gray-700 font-medium">
+                                {group.latestApplication.applicant?.fullname}
+                              </span>
+                              <span className="text-gray-400">vừa đăng ký</span>
+                              <span className="text-yellow-600 font-medium">
+                                {new Date(group.latestApplication.createdAt).toLocaleString('vi-VN', {
+                                  hour: '2-digit',
+                                  minute: '2-digit',
+                                  day: '2-digit',
+                                  month: '2-digit'
+                                })}
+                              </span>
+                            </div>
                           )}
+                          <div className="flex items-center gap-2 text-xs text-gray-500">
+                            {group.duty?.location && (
+                              <>
+                                <span>📍 {group.duty.location}</span>
+                                <span>•</span>
+                              </>
+                            )}
+                            <span className="flex items-center gap-1">
+                              <MessageSquare className="h-3 w-3" />
+                              {group.name}
+                            </span>
+                          </div>
                         </div>
                       </div>
                     </TableCell>
                     <TableCell>
-                      <p className="font-medium text-gray-900">{group.duty?.tittle || 'N/A'}</p>
-                    </TableCell>
-                    <TableCell>
                       <div className="flex items-center gap-2">
-                        <Users className="h-4 w-4 text-[#467057]" />
-                        <span className="font-medium">{group.members?.length || 0}</span>
-                        <span className="text-gray-500 text-sm">thành viên</span>
+                        <Users className="h-4 w-4 text-gray-400" />
+                        <span className="font-medium text-gray-900">{group.members?.length || 0}</span>
                       </div>
                     </TableCell>
                     <TableCell>
@@ -365,7 +438,7 @@ const AdminGroups = () => {
                 ))
               ) : (
                 <TableRow>
-                  <TableCell colSpan={6} className="text-center py-12 text-gray-500">
+                  <TableCell colSpan={5} className="text-center py-12 text-gray-500">
                     <div className="flex flex-col items-center gap-2">
                       <MessageSquare className="h-12 w-12 text-gray-300" />
                       <p className="text-lg font-medium">Không tìm thấy nhóm</p>

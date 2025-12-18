@@ -224,7 +224,7 @@ const seedData = async () => {
     // Create admin user
     const adminUser = await User.create({
       fullname: "Admin User",
-      email: "admin@changemakers.com",
+      email: "admin@gmail.com",
       phoneNumber: 1234567890,
       password: hashedPassword,
       role: "admin",
@@ -267,42 +267,28 @@ const seedData = async () => {
       users.push(user);
     }
 
-    // Create organizations
+    // Create organizations (all by admin)
     console.log("Creating organizations...");
     const organizations = [];
     for (let i = 0; i < 10; i++) {
-      // First 3 organizations are owned by admin, rest by random users
-      const orgOwner = i < 3 ? adminUser : users[Math.floor(Math.random() * 19) + 1];
       const org = await Organization.create({
         name: organizationNames[i],
         description: organizationDescriptions[i],
         website: websites[i],
         location: getRandomElement(locations),
         logo: "https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=200",
-        userId: orgOwner._id,
+        userId: adminUser._id,
       });
       organizations.push(org);
     }
 
-    // Create duties
+    // Create duties (all by admin)
     console.log("Creating duties...");
     const duties = [];
-    // Get admin-owned organizations (first 3)
-    const adminOrganizations = organizations.slice(0, 3);
 
     for (let i = 0; i < 30; i++) {
-      // First 10 duties are created by admin (using admin organizations)
-      // Rest are created by random users
-      let org, orgOwner;
-      if (i < 10) {
-        // Admin duties - use admin organizations
-        org = getRandomElement(adminOrganizations);
-        orgOwner = adminUser;
-      } else {
-        // Regular user duties
-        org = getRandomElement(organizations);
-        orgOwner = users.find(u => u._id.toString() === org.userId.toString()) || users[1];
-      }
+      // All duties created by admin
+      const org = getRandomElement(organizations);
 
       // Generate dates for upcoming events
       const daysUntilStart = Math.floor(Math.random() * 14) + 1; // 1-14 days
@@ -321,7 +307,7 @@ const seedData = async () => {
         jobType: getRandomElement(jobTypes),
         position: Math.floor(Math.random() * 10) + 1, // 1-10 positions
         organization: org._id,
-        created_by: orgOwner._id,
+        created_by: adminUser._id,
         applications: [],
         startDate: startDate,
         endDate: endDate,
@@ -332,15 +318,41 @@ const seedData = async () => {
       duties.push(duty);
     }
 
-    // Create applications
+    // Create applications (ensure each duty has at least 1 accepted application)
     console.log("Creating applications...");
     const applications = [];
     const statuses = ["pending", "accepted", "rejected"];
+    const regularUsers = users.filter(u => u.role === "user");
 
-    for (let i = 0; i < 50; i++) {
+    // First, create at least 1 accepted application for each duty
+    for (const duty of duties) {
+      const applicant = getRandomElement(regularUsers);
+      const application = await Application.create({
+        duty: duty._id,
+        applicant: applicant._id,
+        status: "accepted",
+      });
+      applications.push(application);
+
+      // Update duty with application
+      await Duty.findByIdAndUpdate(duty._id, {
+        $push: { applications: application._id },
+      });
+    }
+
+    // Create additional random applications
+    for (let i = 0; i < 30; i++) {
       const duty = getRandomElement(duties);
-      const applicant = getRandomElement(users.filter(u => u.role === "user"));
+      const applicant = getRandomElement(regularUsers);
       const status = getRandomElement(statuses);
+
+      // Check if this applicant already applied to this duty
+      const existingApp = applications.find(app =>
+        app.duty.toString() === duty._id.toString() &&
+        app.applicant.toString() === applicant._id.toString()
+      );
+
+      if (existingApp) continue;
 
       const application = await Application.create({
         duty: duty._id,
@@ -355,17 +367,11 @@ const seedData = async () => {
       });
     }
 
-    // Create groups for duties with accepted applications
+    // Create groups for ALL duties (all by admin)
     console.log("Creating groups...");
     const groups = [];
-    const dutiesWithAcceptedApps = duties.filter(duty => {
-      const dutyApps = applications.filter(app =>
-        app.duty.toString() === duty._id.toString() && app.status === "accepted"
-      );
-      return dutyApps.length > 0;
-    });
 
-    for (const duty of dutiesWithAcceptedApps) {
+    for (const duty of duties) {
       const acceptedApps = applications.filter(app =>
         app.duty.toString() === duty._id.toString() && app.status === "accepted"
       );
@@ -376,7 +382,7 @@ const seedData = async () => {
         name: `${duty.tittle} - Group`,
         description: `Group for ${duty.tittle} volunteers`,
         members: members,
-        created_by: duty.created_by,
+        created_by: adminUser._id,
       });
       groups.push(group);
     }
@@ -424,21 +430,17 @@ const seedData = async () => {
       });
     }
 
-    // Count admin-created items
-    const adminOrgCount = await Organization.countDocuments({ userId: adminUser._id });
-    const adminDutyCount = await Duty.countDocuments({ created_by: adminUser._id });
-
     console.log("\n✅ Seed data created successfully!");
     console.log("\n📊 Created:");
     console.log(`   - ${await User.countDocuments()} users (1 admin, ${await User.countDocuments({ role: "user" })} regular)`);
-    console.log(`   - ${await Organization.countDocuments()} organizations (${adminOrgCount} by admin, ${await Organization.countDocuments() - adminOrgCount} by users)`);
-    console.log(`   - ${await Duty.countDocuments()} duties (${adminDutyCount} by admin, ${await Duty.countDocuments() - adminDutyCount} by users)`);
+    console.log(`   - ${await Organization.countDocuments()} organizations (ALL by admin)`);
+    console.log(`   - ${await Duty.countDocuments()} duties (ALL by admin)`);
     console.log(`   - ${await Application.countDocuments()} applications`);
-    console.log(`   - ${await Group.countDocuments()} groups`);
+    console.log(`   - ${await Group.countDocuments()} groups (ALL by admin, 1 group per duty)`);
     console.log(`   - ${await Post.countDocuments()} posts`);
     console.log(`   - ${await Comment.countDocuments()} comments`);
     console.log("\n🔑 Default credentials:");
-    console.log("   Email: admin@changemakers.com");
+    console.log("   Email: admin@gmail.com");
     console.log("   Password: password123");
     console.log("\n   All other users: password123");
     console.log("   Email format: firstname.lastname@example.com");

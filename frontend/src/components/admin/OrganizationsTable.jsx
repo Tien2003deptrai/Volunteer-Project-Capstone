@@ -15,15 +15,15 @@ import { Edit2, Building2 } from "lucide-react";
 const OrganizationsTable = ({ organizations, onEdit }) => {
   return (
     <Table>
-      <TableCaption>A list of all organizations</TableCaption>
+      <TableCaption>Danh sách tất cả tổ chức</TableCaption>
       <TableHeader>
         <TableRow>
           <TableHead>Logo</TableHead>
-          <TableHead>Name</TableHead>
-          <TableHead>Location</TableHead>
+          <TableHead>Tên tổ chức</TableHead>
+          <TableHead>Địa chỉ</TableHead>
           <TableHead>Website</TableHead>
-          <TableHead>Date</TableHead>
-          <TableHead className="text-right">Action</TableHead>
+          <TableHead>Ngày tạo</TableHead>
+          <TableHead className="text-right">Thao tác</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -88,8 +88,8 @@ const OrganizationsTable = ({ organizations, onEdit }) => {
             <TableCell colSpan={6} className="text-center py-12 text-gray-500">
               <div className="flex flex-col items-center gap-2">
                 <Building2 className="h-12 w-12 text-gray-300" />
-                <p className="text-lg font-medium">No organizations found</p>
-                <p className="text-sm">Create your first organization to get started</p>
+                <p className="text-lg font-medium">Không tìm thấy tổ chức</p>
+                <p className="text-sm">Tạo tổ chức đầu tiên để bắt đầu</p>
               </div>
             </TableCell>
           </TableRow>
