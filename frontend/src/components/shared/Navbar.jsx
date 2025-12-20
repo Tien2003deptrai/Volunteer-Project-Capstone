@@ -72,6 +72,7 @@ const Navbar = () => {
                 <Link to="/upcoming"><li>Sắp diễn ra</li></Link>
                 <Link to="/about"><li>Về chúng tôi</li></Link>
                 <Link to="/gallery"><li>Cộng đồng</li></Link>
+                <Link to="/friends"><li>Bạn bè</li></Link>
               </>
             )}
           </ul>
@@ -170,6 +171,7 @@ const Navbar = () => {
                 <Link to="/upcoming" onClick={() => setIsOpen(false)}><li className="py-2">Sắp diễn ra</li></Link>
                 <Link to="/about" onClick={() => setIsOpen(false)}><li className="py-2">Về chúng tôi</li></Link>
                 <Link to="/gallery" onClick={() => setIsOpen(false)}><li className="py-2">Cộng đồng</li></Link>
+                <Link to="/friends" onClick={() => setIsOpen(false)}><li className="py-2">Bạn bè</li></Link>
                 {user && user.role === "user" && (
                   <Link to="/messages" onClick={() => setIsOpen(false)}>
                     <li className="py-2 flex items-center justify-center gap-2">

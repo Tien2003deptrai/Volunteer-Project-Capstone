@@ -3,7 +3,7 @@ import Navbar from "./shared/Navbar";
 import Footer from "./shared/Footer";
 import { Avatar, AvatarImage } from "./ui/avatar";
 import { Button } from "./ui/button";
-import { Contact, Mail, Pen, MapPin, Calendar, Building2, Award, FileText, Download, History, CheckCircle2, Clock, XCircle } from "lucide-react";
+import { Contact, Mail, Pen, MapPin, Calendar, Building2, Award, FileText, Download, History, CheckCircle2, Clock, XCircle, Bookmark, Heart, Briefcase } from "lucide-react";
 import { Badge } from "./ui/badge";
 import UpdateProfileDialog from "./UpdateProfileDialog";
 import { useSelector } from "react-redux";
@@ -11,6 +11,7 @@ import useGetAppliedDuties from "@/hooks/useGetAppliedDuties";
 import AppliedDutyTable from "./AppliedDutyTable";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card";
 import { useNavigate } from "react-router-dom";
+import useFavoriteStore from "@/store/favoriteStore";
 
 const Profile = () => {
   useGetAppliedDuties();
@@ -18,6 +19,7 @@ const Profile = () => {
   const { user } = useSelector((store) => store.auth);
   const { allAppliedDuties } = useSelector((store) => store.duty);
   const navigate = useNavigate();
+  const { favorites, removeFavorite } = useFavoriteStore();
 
   const activityHistory = useMemo(() => {
     return allAppliedDuties.filter(
@@ -257,6 +259,118 @@ const Profile = () => {
                       <p className="text-gray-500 font-medium">Chưa có lịch sử hoạt động</p>
                       <p className="text-sm text-gray-400 mt-2">
                         Các nghĩa vụ đã được chấp nhận sẽ xuất hiện ở đây
+                      </p>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+
+              <Card className="border border-gray-200 shadow-md">
+                <CardHeader>
+                  <CardTitle className="text-xl font-bold text-gray-900 flex items-center gap-2">
+                    <Heart className="h-6 w-6 text-[#467057] fill-current" />
+                    Hoạt động yêu thích
+                  </CardTitle>
+                  <CardDescription>
+                    Danh sách các hoạt động tình nguyện bạn đã lưu ({favorites.length})
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  {favorites.length > 0 ? (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      {favorites.map((duty) => (
+                        <div
+                          key={duty._id}
+                          className="border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-all bg-white relative group cursor-pointer"
+                          onClick={() => navigate(`/description/${duty._id}`)}
+                        >
+                          {/* Image */}
+                          {duty.images && duty.images.length > 0 ? (
+                            <div className="relative h-48 w-full overflow-hidden bg-gray-100">
+                              <img
+                                src={duty.images[0]}
+                                alt={duty.tittle}
+                                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                              />
+                              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                              <div className="absolute top-2 left-2">
+                                <Bookmark className="h-5 w-5 text-white fill-white drop-shadow-lg" />
+                              </div>
+                            </div>
+                          ) : (
+                            <div className="relative h-48 w-full bg-gradient-to-br from-[#467057]/20 to-[#2A4B37]/20 flex items-center justify-center">
+                              <Briefcase className="h-16 w-16 text-[#467057]/30" />
+                              <div className="absolute top-2 left-2">
+                                <Bookmark className="h-5 w-5 text-[#467057] fill-current" />
+                              </div>
+                            </div>
+                          )}
+
+                          {/* Remove Button */}
+                          <div className="absolute top-2 right-2 z-10">
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                removeFavorite(duty._id);
+                              }}
+                              className="h-8 w-8 bg-white/90 hover:bg-white text-red-500 hover:text-red-700 opacity-0 group-hover:opacity-100 transition-opacity shadow-md"
+                              title="Xóa khỏi yêu thích"
+                            >
+                              <XCircle className="h-5 w-5" />
+                            </Button>
+                          </div>
+
+                          {/* Content */}
+                          <div className="p-4">
+                            <h3 className="font-bold text-base text-gray-900 line-clamp-2 mb-3 min-h-[3rem]">
+                              {duty.tittle || "Hoạt động chưa có tiêu đề"}
+                            </h3>
+
+                            {duty.organization && (
+                              <div className="flex items-center gap-2 text-sm text-gray-600 mb-2">
+                                <Building2 className="h-4 w-4 text-[#467057] flex-shrink-0" />
+                                <span className="truncate">{duty.organization.name}</span>
+                              </div>
+                            )}
+
+                            {duty.location && (
+                              <div className="flex items-center gap-2 text-sm text-gray-600 mb-3">
+                                <MapPin className="h-4 w-4 text-[#467057] flex-shrink-0" />
+                                <span className="truncate">{duty.location}</span>
+                              </div>
+                            )}
+
+                            <div className="flex flex-wrap gap-2 pt-3 border-t border-gray-100">
+                              {duty.position && (
+                                <Badge className="bg-green-50 text-green-700 border-green-200 text-xs">
+                                  <Briefcase className="h-3 w-3 mr-1" />
+                                  {duty.position} Slots
+                                </Badge>
+                              )}
+                              {duty.jobType && (
+                                <Badge className="bg-orange-50 text-orange-700 border-orange-200 text-xs">
+                                  {duty.jobType}
+                                </Badge>
+                              )}
+                              {duty.workDuration && (
+                                <Badge className="bg-blue-50 text-blue-700 border-blue-200 text-xs">
+                                  <Clock className="h-3 w-3 mr-1" />
+                                  {duty.workDuration}h
+                                </Badge>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="text-center py-12">
+                      <Bookmark className="h-16 w-16 text-gray-300 mx-auto mb-4" />
+                      <p className="text-gray-500 font-medium">Chưa có hoạt động yêu thích</p>
+                      <p className="text-sm text-gray-400 mt-2">
+                        Click vào biểu tượng <Bookmark className="h-4 w-4 inline" /> để lưu hoạt động
                       </p>
                     </div>
                   )}

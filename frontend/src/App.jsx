@@ -3,7 +3,7 @@ import './App.css'
 import Home from './components/Home'
 import Login from './components/auth/Login'
 import Signup from './components/auth/Signup'
-import Organizations from './components/admin/Organizations'
+import AdminOrganizations from './components/admin/Organizations'
 import AdminDuties from './components/admin/AdminDuties'
 import Applicants from './components/admin/Applicants'
 import ProtectedRoute from './components/admin/ProtectedRoute'
@@ -20,6 +20,7 @@ import UpcomingEvents from './components/UpcomingEvents'
 import Messages from './components/Messages'
 import About from './components/About'
 import CommunityGallery from './components/CommunityGallery'
+import Friends from './components/Friends'
 
 const App = () => {
   return (
@@ -37,10 +38,11 @@ const App = () => {
           <Route path="/about" element={<About />} />
           <Route path="/gallery" element={<CommunityGallery />} />
           <Route path="/description/:id" element={<DutyDescription />} />
+          <Route path="/friends" element={<Friends />} />
           {/* Admin routes */}
           <Route path="/admin/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
           <Route path="/admin/users" element={<ProtectedRoute><AdminUsers /></ProtectedRoute>} />
-          <Route path="/admin/organizations" element={<ProtectedRoute><Organizations /></ProtectedRoute>} />
+          <Route path="/admin/organizations" element={<ProtectedRoute><AdminOrganizations /></ProtectedRoute>} />
           <Route path="/admin/duties" element={<ProtectedRoute><AdminDuties /></ProtectedRoute>} />
           <Route path="/admin/duties/:id/applicants" element={<ProtectedRoute><Applicants /></ProtectedRoute>} />
           <Route path="/admin/groups" element={<ProtectedRoute><AdminGroups /></ProtectedRoute>} />

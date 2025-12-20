@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
-import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 import { Button } from "../ui/button";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -16,7 +15,6 @@ const Login = () => {
   const [input, setInput] = useState({
     email: "",
     password: "",
-    role: "",
   });
   const { loading } = useSelector((store) => store.auth);
   const navigate = useNavigate();
@@ -41,8 +39,14 @@ const Login = () => {
 
       if (res.data.success) {
         dispatch(setUser(res.data.user)); // Set user in the redux store
-        navigate("/"); // Redirect on success
         toast.success(res.data.message); // Show success toast
+
+        // Navigate based on user role from backend
+        if (res.data.user.role === "admin") {
+          navigate("/admin/dashboard");
+        } else {
+          navigate("/");
+        }
       } else {
         toast.error(res.data.message); // Handle unsuccessful login
       }
@@ -97,33 +101,6 @@ const Login = () => {
             />
           </div>
 
-          <div className="flex items-center justify-between my-5">
-            <RadioGroup className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-              <div className="flex items-center">
-                <Input
-                  type="radio"
-                  name="role"
-                  value="user"
-                  checked={input.role === "user"}
-                  onChange={eventHandler}
-                  className="cursor-pointer"
-                />
-                <Label htmlFor="option-one">User</Label>
-              </div>
-              <div className="flex items-center">
-                <Input
-                  type="radio"
-                  name="role"
-                  value="admin"
-                  checked={input.role === "admin"}
-                  onChange={eventHandler}
-                  className="cursor-pointer"
-                />
-                <Label htmlFor="option-two">Admin</Label>
-              </div>
-            </RadioGroup>
-          </div>
-
           {loading ? (
             <Button className="w-full my-4">
               <Loader2 className="mr-2 h-4 animate-spin" />
@@ -136,7 +113,7 @@ const Login = () => {
           )}
 
           <span className="text-sm block text-center mt-3">
-            Don't have an account?{" "}
+            Don&apos;t have an account?{" "}
             <Link to="/signup" className="text-blue-500">
               Sign Up
             </Link>

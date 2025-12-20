@@ -50,7 +50,9 @@ import {
   FileQuestion,
   ChevronLeft,
   ChevronRight,
-  X
+  X,
+  Share2,
+  Check
 } from "lucide-react";
 
 const DutyDescription = () => {
@@ -75,6 +77,7 @@ const DutyDescription = () => {
   const [selectedImageIndex, setSelectedImageIndex] = useState(null);
   const [viewProfileUserId, setViewProfileUserId] = useState(null);
   const [showViewProfile, setShowViewProfile] = useState(false);
+  const [copied, setCopied] = useState(false);
 
   const params = useParams();
   const dutyId = params.id;
@@ -150,6 +153,20 @@ const DutyDescription = () => {
       3: "Advanced",
     };
     return labels[level] || `Level ${level}`;
+  };
+
+  const handleCopyLink = async () => {
+    const dutyUrl = `${window.location.origin}/description/${dutyId}`;
+    try {
+      await navigator.clipboard.writeText(dutyUrl);
+      setCopied(true);
+      toast.success("Đã sao chép liên kết hoạt động!");
+      setTimeout(() => {
+        setCopied(false);
+      }, 2000);
+    } catch {
+      toast.error("Không thể sao chép liên kết");
+    }
   };
 
   const handleReport = async () => {
@@ -376,19 +393,33 @@ const DutyDescription = () => {
                 <div className="bg-white rounded-lg shadow-md p-6 border border-gray-200">
                   <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
                     <div className="flex-grow">
-                      <div className="flex items-start justify-between gap-4 mb-4">
+                      <div className="flex items-start justify-between gap-2 mb-4">
                         <h1 className="font-bold text-2xl md:text-3xl lg:text-4xl text-gray-900">
                           {singleDuty?.tittle}
                         </h1>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={() => setShowReportDialog(true)}
-                          className="text-gray-500 hover:text-red-600 hover:bg-red-50 flex-shrink-0"
-                          title="Report this duty"
-                        >
-                          <Flag className="h-5 w-5" />
-                        </Button>
+                        <div className="flex gap-2 flex-shrink-0">
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={handleCopyLink}
+                            className={`${copied
+                              ? 'text-green-600 bg-green-50 hover:bg-green-100 hover:text-green-700'
+                              : 'text-gray-500 hover:text-[#467057] hover:bg-[#467057]/10'
+                              } transition-all`}
+                            title="Chia sẻ hoạt động"
+                          >
+                            {copied ? <Check className="h-5 w-5" /> : <Share2 className="h-5 w-5" />}
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => setShowReportDialog(true)}
+                            className="text-gray-500 hover:text-red-600 hover:bg-red-50"
+                            title="Report this duty"
+                          >
+                            <Flag className="h-5 w-5" />
+                          </Button>
+                        </div>
                       </div>
                       <div className="flex flex-wrap gap-2">
                         <Badge className="text-[#467057] bg-green-50 font-semibold px-3 py-1">

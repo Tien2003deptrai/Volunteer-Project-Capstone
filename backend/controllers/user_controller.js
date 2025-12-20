@@ -54,9 +54,9 @@ export const register = async (req, res) => {
 
 export const login = async (req, res) => {
   try {
-    const { email, password, role } = req.body;
+    const { email, password } = req.body;
 
-    if (!email || !password || !role) {
+    if (!email || !password) {
       return res.status(400).json({
         message: "All fields are required",
         success: false,
@@ -75,12 +75,6 @@ export const login = async (req, res) => {
     if (!isPasswordMatch) {
       return res.status(400).json({
         message: "Incorrect email or password",
-        success: false,
-      });
-    }
-    if (role !== user.role) {
-      return res.status(400).json({
-        message: "Account doesn't exist with the current role",
         success: false,
       });
     }

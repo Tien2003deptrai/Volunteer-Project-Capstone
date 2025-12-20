@@ -133,38 +133,49 @@ export const unfollowUser = async (req, res) => {
   }
 };
 
-// Get friends list
+// Get all users (community)
 export const getFriends = async (req, res) => {
   try {
-    const userId = req.id;
+    const currentUserId = req.id;
+    console.log('Fetching friends for user:', currentUserId);
 
-    const friendships = await Friend.find({
-      $or: [
-        { requester: userId, status: 'accepted' },
-        { recipient: userId, status: 'accepted' }
-      ]
+    // Lấy tất cả users trừ chính mình, chỉ lấy role 'user'
+    const users = await User.find({
+      _id: { $ne: currentUserId },
+      role: 'user' // Chỉ lấy users, không lấy admin
     })
-      .populate('requester', 'fullname email profile.profilePhoto')
-      .populate('recipient', 'fullname email profile.profilePhoto')
-      .sort({ updatedAt: -1 });
+      .select('fullname email phoneNumber role profile')
+      .sort({ createdAt: -1 });
 
-    // Extract friend users
-    const friends = friendships.map(friendship => {
-      if (friendship.requester._id.toString() === userId) {
-        return friendship.recipient;
-      } else {
-        return friendship.requester;
+    console.log(`Found ${users.length} users`);
+
+    // Format response
+    const friends = users.map(user => ({
+      _id: user._id,
+      fullname: user.fullname || 'User',
+      email: user.email || '',
+      phoneNumber: user.phoneNumber || '',
+      role: user.role || 'user',
+      profile: {
+        bio: user.profile?.bio || '',
+        profilePhoto: user.profile?.profilePhoto || '',
+        location: user.profile?.location || '',
+        skills: user.profile?.skills || [],
+        resume: user.profile?.resume || '',
+        resumeOriginalName: user.profile?.resumeOriginalName || ''
       }
-    });
+    }));
 
     return res.status(200).json({
       friends,
+      count: friends.length,
       success: true,
+      message: "Danh sách cộng đồng được tải thành công"
     });
   } catch (error) {
-    console.log(error);
+    console.error('Error in getFriends:', error);
     return res.status(500).json({
-      message: "Failed to get friends",
+      message: error.message || "Không thể tải danh sách cộng đồng",
       success: false,
     });
   }

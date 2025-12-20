@@ -5,7 +5,6 @@ import { Input } from './ui/input';
 import {
   Heart,
   MessageCircle,
-  Share2,
   Send,
   MoreVertical,
   Flag,
@@ -44,7 +43,6 @@ const PostCard = ({ post, onUpdate }) => {
   const { user } = useSelector(store => store.auth);
   const [isLiked, setIsLiked] = useState(post.likes?.some(like => like._id === user?._id) || false);
   const [likesCount, setLikesCount] = useState(post.likes?.length || 0);
-  const [sharesCount, setSharesCount] = useState(post.shares?.length || 0);
   const [comments, setComments] = useState(post.comments || []);
   const [showComments, setShowComments] = useState(false);
   const [commentText, setCommentText] = useState('');
@@ -66,21 +64,6 @@ const PostCard = ({ post, onUpdate }) => {
       toast.error(error.response?.data?.message || "Failed to like post");
     }
   };
-
-  const handleShare = async () => {
-    try {
-      const res = await axios.post(`${POST_API}/${post._id}/share`, {}, {
-        withCredentials: true
-      });
-      if (res.data.success) {
-        setSharesCount(res.data.sharesCount);
-        toast.success("Post shared!");
-      }
-    } catch (error) {
-      toast.error(error.response?.data?.message || "Failed to share post");
-    }
-  };
-
 
   const handleComment = async () => {
     if (!commentText.trim()) return;
@@ -279,14 +262,6 @@ const PostCard = ({ post, onUpdate }) => {
           <MessageCircle className="h-5 w-5 mr-2" />
           {comments.length}
         </Button>
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={handleShare}
-        >
-          <Share2 className="h-5 w-5 mr-2" />
-          {sharesCount}
-        </Button>
       </div>
 
       {/* Comments Section */}
@@ -423,7 +398,7 @@ const Group = ({ dutyId }) => {
         toast.success("Post created!");
         setPostContent('');
         setSelectedImages([]);
-        setImagePreviews.forEach(url => URL.revokeObjectURL(url));
+        imagePreviews.forEach(url => URL.revokeObjectURL(url));
         setImagePreviews([]);
         setShowCreateDialog(false);
         fetchPosts(group._id);
@@ -532,7 +507,7 @@ const Group = ({ dutyId }) => {
       </div>
 
       {/* Posts List */}
-      <div>
+      <div className='max-w-3xl mx-auto'>
         {posts.length === 0 ? (
           <div className="bg-white rounded-lg shadow-md p-8 border border-gray-200 text-center">
             <p className="text-gray-600">No posts yet. Be the first to share something!</p>
