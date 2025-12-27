@@ -46,7 +46,7 @@ const UpcomingEvents = () => {
       }
     } catch (error) {
       console.log(error);
-      toast.error("Failed to load upcoming events");
+      toast.error("Không thể tải các hoạt động sắp diễn ra");
     } finally {
       setLoading(false);
     }
@@ -55,7 +55,7 @@ const UpcomingEvents = () => {
   const formatDate = (dateString) => {
     if (!dateString) return "N/A";
     const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", {
+    return date.toLocaleDateString("vi-VN", {
       year: "numeric",
       month: "short",
       day: "numeric",
@@ -95,13 +95,13 @@ const UpcomingEvents = () => {
           )}
           {daysUntilStart !== null && daysUntilStart >= 0 && (
             <Badge className="absolute top-3 right-3 bg-[#467057] text-white">
-              {daysUntilStart === 0 ? "Starts Today" : `${daysUntilStart} day${daysUntilStart !== 1 ? 's' : ''} left`}
+              {daysUntilStart === 0 ? "Bắt đầu hôm nay" : `Còn ${daysUntilStart} ngày`}
             </Badge>
           )}
           {daysUntilDeadline !== null && daysUntilDeadline >= 0 && daysUntilDeadline <= 3 && (
             <Badge className="absolute top-3 left-3 bg-red-500 text-white">
               <AlertCircle className="h-3 w-3 mr-1" />
-              {daysUntilDeadline === 0 ? "Deadline Today" : `${daysUntilDeadline} day${daysUntilDeadline !== 1 ? 's' : ''} left`}
+              {daysUntilDeadline === 0 ? "Hết hạn hôm nay" : `Còn ${daysUntilDeadline} ngày`}
             </Badge>
           )}
         </div>
@@ -129,13 +129,13 @@ const UpcomingEvents = () => {
               {duty.startDate && (
                 <div className="flex items-center gap-2">
                   <Calendar className="h-4 w-4 text-[#467057]" />
-                  <span>Start: {formatDate(duty.startDate)}</span>
+                  <span>Bắt đầu: {formatDate(duty.startDate)}</span>
                 </div>
               )}
               {duty.deadline && (
                 <div className="flex items-center gap-2">
                   <Clock className="h-4 w-4 text-orange-500" />
-                  <span>Deadline: {formatDate(duty.deadline)}</span>
+                  <span>Hết hạn: {formatDate(duty.deadline)}</span>
                 </div>
               )}
             </div>
@@ -144,7 +144,7 @@ const UpcomingEvents = () => {
               <div className="flex items-center gap-2">
                 <Users className="h-4 w-4 text-gray-400" />
                 <span className="text-sm text-gray-500">
-                  {duty.applications?.length || 0} applicant{(duty.applications?.length || 0) !== 1 ? 's' : ''}
+                  {duty.applications?.length || 0} ứng viên
                 </span>
               </div>
               <Button
@@ -178,7 +178,7 @@ const UpcomingEvents = () => {
         <div className="flex-grow flex items-center justify-center">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#467057] mx-auto mb-4"></div>
-            <p className="text-gray-600">Loading upcoming events...</p>
+            <p className="text-gray-600">Đang tải các hoạt động sắp diễn ra...</p>
           </div>
         </div>
         <Footer />
@@ -197,28 +197,28 @@ const UpcomingEvents = () => {
             <BannerSlider banners={[
               {
                 id: 1,
-                title: "Upcoming Volunteer Events",
-                subtitle: "Don't miss out on exciting opportunities starting soon",
+                title: "Các Sự kiện Tình nguyện Sắp Diễn Ra",
+                subtitle: "Đừng bỏ lỡ những cơ hội thú vị sắp bắt đầu",
                 image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=1200&h=600&fit=crop",
-                ctaText: "Browse All Duties",
+                ctaText: "Xem Tất cả Hoạt động",
                 ctaLink: "/duties",
                 gradient: "from-[#467057] to-[#2A4B37]"
               },
               {
                 id: 2,
-                title: "Events Starting Soon",
-                subtitle: "Join volunteer activities beginning in the next 7 days",
+                title: "Sự kiện Sắp Bắt đầu",
+                subtitle: "Tham gia các hoạt động tình nguyện bắt đầu trong 7 ngày tới",
                 image: "https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=1200&h=600&fit=crop",
-                ctaText: "View All Events",
+                ctaText: "Xem Tất cả Sự kiện",
                 ctaLink: "/upcoming",
                 gradient: "from-[#2A4B37] to-[#467057]"
               },
               {
                 id: 3,
-                title: "Act Now - Deadlines Approaching",
-                subtitle: "Apply before registration closes for these amazing opportunities",
+                title: "Hành động Ngay - Hạn chót Đang Đến",
+                subtitle: "Ứng tuyển trước khi đăng ký đóng cho những cơ hội tuyệt vời này",
                 image: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=1200&h=600&fit=crop",
-                ctaText: "Explore Opportunities",
+                ctaText: "Khám phá Cơ hội",
                 ctaLink: "/browse",
                 gradient: "from-[#467057] to-[#345441]"
               }
@@ -272,10 +272,10 @@ const UpcomingEvents = () => {
                 <CardContent className="py-16 text-center">
                   <Calendar className="h-16 w-16 text-gray-300 mx-auto mb-4" />
                   <h3 className="text-xl font-semibold text-gray-700 mb-2">
-                    No {tabs.find(tab => tab.id === activeTab)?.label.toLowerCase()} events
+                    Không có sự kiện {tabs.find(tab => tab.id === activeTab)?.label.toLowerCase()}
                   </h3>
                   <p className="text-gray-500">
-                    Check back later for new opportunities
+                    Vui lòng quay lại sau để xem các cơ hội mới
                   </p>
                 </CardContent>
               </Card>

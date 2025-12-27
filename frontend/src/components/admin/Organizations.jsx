@@ -34,11 +34,18 @@ const Organizations = () => {
     fetchOrganizations();
   }, [fetchOrganizations]);
 
-  // Filter logic happens here
-  const filteredOrganizations = organizations.filter((organization) => {
-    if (!input) return true;
-    return organization?.name?.toLowerCase().includes(input.toLowerCase());
-  });
+  // Filter and sort logic happens here
+  const filteredOrganizations = organizations
+    .filter((organization) => {
+      if (!input) return true;
+      return organization?.name?.toLowerCase().includes(input.toLowerCase());
+    })
+    .sort((a, b) => {
+      // Sort by createdAt descending (newest first)
+      const dateA = new Date(a.createdAt || a._id);
+      const dateB = new Date(b.createdAt || b._id);
+      return dateB - dateA;
+    });
 
   const handleEdit = (organization) => {
     setSelectedOrganization(organization);

@@ -25,28 +25,28 @@ const Duties = () => {
   const dutiesBanners = [
     {
       id: 1,
-      title: "Find Your Perfect Volunteer Opportunity",
-      subtitle: "Discover meaningful duties that match your skills and interests",
+      title: "Tìm Cơ hội Tình nguyện Hoàn hảo của Bạn",
+      subtitle: "Khám phá những hoạt động ý nghĩa phù hợp với kỹ năng và sở thích của bạn",
       image: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=1200&h=600&fit=crop",
-      ctaText: "Browse All Duties",
+      ctaText: "Xem Tất cả Hoạt động",
       ctaLink: "/browse",
       gradient: "from-[#467057] to-[#2A4B37]"
     },
     {
       id: 2,
-      title: "Make a Difference Today",
-      subtitle: "Join thousands of volunteers creating positive change in communities",
+      title: "Tạo Sự Khác Biệt Hôm Nay",
+      subtitle: "Tham gia cùng hàng nghìn tình nguyện viên tạo ra thay đổi tích cực trong cộng đồng",
       image: "https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=1200&h=600&fit=crop",
-      ctaText: "View Upcoming Events",
+      ctaText: "Xem Sự kiện Sắp Diễn Ra",
       ctaLink: "/upcoming",
       gradient: "from-[#2A4B37] to-[#467057]"
     },
     {
       id: 3,
-      title: "Start Your Volunteer Journey",
-      subtitle: "Apply now and become part of a community making real impact",
+      title: "Bắt đầu Hành trình Tình nguyện của Bạn",
+      subtitle: "Ứng tuyển ngay và trở thành một phần của cộng đồng tạo ra tác động thực sự",
       image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=1200&h=600&fit=crop",
-      ctaText: "Explore Opportunities",
+      ctaText: "Khám phá Cơ hội",
       ctaLink: "/browse",
       gradient: "from-[#467057] to-[#345441]"
     }
@@ -160,7 +160,7 @@ const Duties = () => {
           </div>
           <div className='flex-1'>
             {
-              allDuties.length <= 0 ? <span>Duties not found!</span> : (
+              allDuties.length <= 0 ? <span>Không tìm thấy hoạt động!</span> : (
                 <div className='space-y-6'>
                   <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 items-stretch'>
                     {

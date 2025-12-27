@@ -441,28 +441,28 @@ const Group = ({ dutyId }) => {
           <Dialog open={showCreateDialog} onOpenChange={setShowCreateDialog}>
             <DialogTrigger asChild>
               <Button className="bg-[#467057] hover:bg-[#2A4B37]">
-                Create Post
+                Tạo Bài Viết
               </Button>
             </DialogTrigger>
             <DialogContent>
               <DialogHeader>
-                <DialogTitle>Create New Post</DialogTitle>
+                <DialogTitle>Tạo Bài Viết Mới</DialogTitle>
                 <DialogDescription>
-                  Share your thoughts with the group
+                  Chia sẻ suy nghĩ của bạn với nhóm
                 </DialogDescription>
               </DialogHeader>
               <div className="space-y-4">
                 <div>
-                  <Label>Content</Label>
+                  <Label>Nội Dung</Label>
                   <Textarea
                     value={postContent}
                     onChange={(e) => setPostContent(e.target.value)}
-                    placeholder="What's on your mind?"
+                    placeholder="Bạn đang nghĩ gì?"
                     rows={6}
                   />
                 </div>
                 <div>
-                  <Label>Images (Max 10)</Label>
+                  <Label>Ảnh (Max 10)</Label>
                   <Input
                     type="file"
                     accept="image/*"
@@ -498,7 +498,7 @@ const Group = ({ dutyId }) => {
                   disabled={isCreatingPost || !postContent.trim()}
                   className="w-full bg-[#467057] hover:bg-[#2A4B37]"
                 >
-                  {isCreatingPost ? "Posting..." : "Post"}
+                  {isCreatingPost ? "Đang đăng..." : "Đăng"}
                 </Button>
               </div>
             </DialogContent>
@@ -510,7 +510,7 @@ const Group = ({ dutyId }) => {
       <div className='max-w-3xl mx-auto'>
         {posts.length === 0 ? (
           <div className="bg-white rounded-lg shadow-md p-8 border border-gray-200 text-center">
-            <p className="text-gray-600">No posts yet. Be the first to share something!</p>
+            <p className="text-gray-600">Chưa có bài viết nào. Hãy là người đầu tiên chia sẻ suy nghĩ của bạn!</p>
           </div>
         ) : (
           posts.map((post) => (

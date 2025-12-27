@@ -60,7 +60,8 @@ const OrganizationCreateModal = ({ open, onOpenChange, onSuccess, organization =
   }, [open, isEditMode, organization]);
 
   const eventHandler = (e) => {
-    setInput({ ...input, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setInput((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleFileChange = (e) => {
@@ -120,11 +121,22 @@ const OrganizationCreateModal = ({ open, onOpenChange, onSuccess, organization =
         }
       } else {
         // Create organization
+        const formData = new FormData();
+        formData.append('name', input.name.trim());
+        formData.append('description', input.description || '');
+        formData.append('location', input.location || '');
+        formData.append('website', input.website || '');
+        if (logoFile) {
+          formData.append('file', logoFile);
+        }
+
         const res = await axios.post(
           `${ORGANIZATION_API}/register`,
-          { organizationName: input.name },
+          formData,
           {
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
             withCredentials: true,
           }
         );

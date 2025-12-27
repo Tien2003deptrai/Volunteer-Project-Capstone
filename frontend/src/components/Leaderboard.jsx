@@ -25,7 +25,7 @@ const Leaderboard = ({ onViewProfile, dutyId }) => {
       }
     } catch (error) {
       console.log(error);
-      toast.error("Failed to load leaderboard");
+      toast.error("Không thể tải bảng xếp hạng");
     } finally {
       setLoading(false);
     }
@@ -69,9 +69,9 @@ const Leaderboard = ({ onViewProfile, dutyId }) => {
         <CardHeader>
           <CardTitle className="text-xl font-bold text-gray-900 flex items-center gap-2">
             <Trophy className="h-6 w-6 text-yellow-500" />
-            Top Contributors
+            Những Người Đóng Góp Hàng Đầu
           </CardTitle>
-          <CardDescription>Volunteers with the most contributions</CardDescription>
+          <CardDescription>Tình nguyện viên có nhiều đóng góp nhất</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="flex items-center justify-center py-8">
@@ -88,14 +88,14 @@ const Leaderboard = ({ onViewProfile, dutyId }) => {
         <CardHeader>
           <CardTitle className="text-xl font-bold text-gray-900 flex items-center gap-2">
             <Trophy className="h-6 w-6 text-yellow-500" />
-            Top Contributors
+            Những Người Đóng Góp Hàng Đầu
           </CardTitle>
-          <CardDescription>Volunteers with the most contributions</CardDescription>
+          <CardDescription>Tình nguyện viên có nhiều đóng góp nhất</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="text-center py-8 text-gray-500">
             <Trophy className="h-12 w-12 mx-auto mb-3 text-gray-300" />
-            <p>No contributors yet</p>
+            <p>Chưa có người đóng góp</p>
           </div>
         </CardContent>
       </Card>
@@ -106,10 +106,9 @@ const Leaderboard = ({ onViewProfile, dutyId }) => {
     <Card className="shadow-md border border-gray-200">
       <CardHeader>
         <CardTitle className="text-xl font-bold text-gray-900 flex items-center gap-2">
-          <Trophy className="h-6 w-6 text-yellow-500" />
-          Top Contributors
+          Những Người Đóng Góp Hàng Đầu
         </CardTitle>
-        <CardDescription>Volunteers with the most contributions</CardDescription>
+        <CardDescription>Tình nguyện viên có nhiều đóng góp nhất</CardDescription>
       </CardHeader>
       <CardContent>
         <div className="space-y-3">
@@ -140,7 +139,7 @@ const Leaderboard = ({ onViewProfile, dutyId }) => {
                   </p>
                   {index < 3 && (
                     <Badge className={`${getRankBadgeColor(index)} text-xs px-2 py-0.5`}>
-                      Top {index + 1}
+                      Hạng {index + 1}
                     </Badge>
                   )}
                 </div>
@@ -167,7 +166,7 @@ const Leaderboard = ({ onViewProfile, dutyId }) => {
                   onViewProfile && onViewProfile(contributor.user._id);
                 }}
                 className="flex-shrink-0 p-2 text-[#467057] hover:bg-[#467057] hover:text-white rounded-lg transition-colors"
-                title="View Profile"
+                title="Xem Hồ sơ"
               >
                 <Eye className="h-4 w-4" />
               </button>

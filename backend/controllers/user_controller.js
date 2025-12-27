@@ -1,6 +1,9 @@
 import { User } from "../models/user_model.js";
 import { Post } from "../models/post_model.js";
 import { Group } from "../models/group_model.js";
+import { Duty } from "../models/duty_model.js";
+import { Organization } from "../models/organization_model.js";
+import { Application } from "../models/application_model.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import getDataUri from "../utils/datauri.js";
@@ -343,6 +346,74 @@ export const getTopContributors = async (req, res) => {
     console.log(error);
     return res.status(500).json({
       message: "Failed to get top contributors",
+      success: false,
+    });
+  }
+};
+
+// Get public statistics for About page
+export const getPublicStats = async (req, res) => {
+  try {
+    // Active volunteers (users with role 'user')
+    const activeVolunteers = await User.countDocuments({ role: 'user' });
+
+    // Completed projects (duties that are closed or have passed endDate)
+    const now = new Date();
+    const completedProjects = await Duty.countDocuments({
+      $or: [
+        { isOpen: false },
+        { endDate: { $lt: now } }
+      ]
+    });
+
+    // Partner organizations
+    const partnerOrganizations = await Organization.countDocuments();
+
+    // Total duties (all duties)
+    const totalDuties = await Duty.countDocuments();
+
+    // Total volunteer hours (sum of workDuration from completed duties or accepted applications)
+    const completedDuties = await Duty.find({
+      $or: [
+        { isOpen: false },
+        { endDate: { $lt: now } }
+      ]
+    }).select('workDuration');
+
+    // Also count hours from accepted applications
+    const acceptedApplications = await Application.find({ status: 'accepted' })
+      .populate('duty', 'workDuration');
+
+    let totalVolunteerHours = 0;
+
+    // Sum hours from completed duties
+    completedDuties.forEach(duty => {
+      if (duty.workDuration) {
+        totalVolunteerHours += duty.workDuration;
+      }
+    });
+
+    // Sum hours from accepted applications
+    acceptedApplications.forEach(app => {
+      if (app.duty && app.duty.workDuration) {
+        totalVolunteerHours += app.duty.workDuration;
+      }
+    });
+
+    return res.status(200).json({
+      success: true,
+      stats: {
+        activeVolunteers,
+        completedProjects,
+        totalDuties,
+        partnerOrganizations,
+        totalVolunteerHours: Math.round(totalVolunteerHours)
+      }
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      message: "Failed to get statistics",
       success: false,
     });
   }

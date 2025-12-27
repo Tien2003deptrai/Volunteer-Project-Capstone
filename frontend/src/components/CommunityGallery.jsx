@@ -18,85 +18,85 @@ const CommunityGallery = () => {
     {
       id: 1,
       src: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=800",
-      title: "Community Cleanup Day",
-      description: "Volunteers working together to clean up local parks",
+      title: "Ngày Dọn Dẹp Cộng Đồng",
+      description: "Tình nguyện viên cùng nhau dọn dẹp các công viên địa phương",
       date: "2024-01-15"
     },
     {
       id: 2,
       src: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=800",
-      title: "Education Workshop",
-      description: "Teaching digital literacy to seniors",
+      title: "Hội thảo Giáo dục",
+      description: "Dạy kỹ năng số cho người cao tuổi",
       date: "2024-01-20"
     },
     {
       id: 3,
       src: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=800",
-      title: "Tree Planting Initiative",
-      description: "Planting trees for a greener future",
+      title: "Sáng kiến Trồng Cây",
+      description: "Trồng cây cho tương lai xanh hơn",
       date: "2024-02-01"
     },
     {
       id: 4,
       src: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800",
-      title: "Food Bank Volunteer",
-      description: "Distributing food to families in need",
+      title: "Tình nguyện viên Ngân hàng Thực phẩm",
+      description: "Phân phát thực phẩm cho các gia đình khó khăn",
       date: "2024-02-10"
     },
     {
       id: 5,
       src: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=800",
-      title: "Youth Mentorship Program",
-      description: "Mentors guiding young people",
+      title: "Chương trình Cố vấn Thanh niên",
+      description: "Các cố vấn hướng dẫn thanh niên",
       date: "2024-02-15"
     },
     {
       id: 6,
       src: "https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=800",
-      title: "Health Camp",
-      description: "Free health checkups for the community",
+      title: "Trại Y tế",
+      description: "Khám sức khỏe miễn phí cho cộng đồng",
       date: "2024-02-20"
     },
     {
       id: 7,
       src: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=800",
-      title: "Beach Cleanup",
-      description: "Protecting our oceans and beaches",
+      title: "Dọn Dẹp Bãi Biển",
+      description: "Bảo vệ đại dương và bãi biển của chúng ta",
       date: "2024-03-01"
     },
     {
       id: 8,
       src: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=800",
-      title: "Reading Program",
-      description: "Promoting literacy among children",
+      title: "Chương trình Đọc sách",
+      description: "Thúc đẩy khả năng đọc viết cho trẻ em",
       date: "2024-03-05"
     },
     {
       id: 9,
       src: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=800",
-      title: "Community Garden",
-      description: "Growing fresh vegetables together",
+      title: "Vườn Cộng đồng",
+      description: "Cùng nhau trồng rau tươi",
       date: "2024-03-10"
     },
     {
       id: 10,
       src: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800",
-      title: "Disaster Relief",
-      description: "Supporting communities in times of need",
+      title: "Cứu trợ Thiên tai",
+      description: "Hỗ trợ cộng đồng trong lúc khó khăn",
       date: "2024-03-15"
     },
     {
       id: 11,
       src: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=800",
-      title: "Animal Shelter Help",
-      description: "Caring for animals in need",
+      title: "Hỗ trợ Trại Động vật",
+      description: "Chăm sóc động vật cần giúp đỡ",
       date: "2024-03-20"
     },
     {
       id: 12,
       src: "https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=800",
-      title: "Senior Care",
-      description: "Bringing joy to elderly community members",
+      title: "Chăm sóc Người cao tuổi",
+      description: "Mang niềm vui đến các thành viên cao tuổi trong cộng đồng",
       date: "2024-03-25"
     }
   ];
@@ -139,10 +139,10 @@ const CommunityGallery = () => {
                 <Sparkles className="h-12 w-12 text-yellow-300" />
               </div>
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
-                Community <span className="text-yellow-300">Gallery</span>
+                Thư viện <span className="text-yellow-300">Cộng đồng</span>
               </h1>
               <p className="text-xl md:text-2xl max-w-3xl mx-auto text-gray-100 leading-relaxed">
-                Celebrating the spirit of volunteerism through moments of impact, unity, and positive change
+                Tôn vinh tinh thần tình nguyện qua những khoảnh khắc tác động, đoàn kết và thay đổi tích cực
               </p>
             </motion.div>
           </div>
@@ -164,21 +164,21 @@ const CommunityGallery = () => {
                   <Heart className="h-6 w-6 text-[#467057]" />
                 </div>
                 <div className="text-3xl font-bold text-gray-900 mb-1">{galleryImages.length}+</div>
-                <div className="text-sm text-gray-600">Moments Captured</div>
+                <div className="text-sm text-gray-600">Khoảnh khắc được ghi lại</div>
               </div>
               <div className="bg-white rounded-lg shadow-md p-6 border border-gray-200 text-center">
                 <div className="inline-flex items-center justify-center w-12 h-12 bg-[#467057]/10 rounded-full mb-3">
                   <Users className="h-6 w-6 text-[#467057]" />
                 </div>
                 <div className="text-3xl font-bold text-gray-900 mb-1">500+</div>
-                <div className="text-sm text-gray-600">Volunteers Featured</div>
+                <div className="text-sm text-gray-600">Tình nguyện viên được giới thiệu</div>
               </div>
               <div className="bg-white rounded-lg shadow-md p-6 border border-gray-200 text-center">
                 <div className="inline-flex items-center justify-center w-12 h-12 bg-[#467057]/10 rounded-full mb-3">
                   <Sparkles className="h-6 w-6 text-[#467057]" />
                 </div>
                 <div className="text-3xl font-bold text-gray-900 mb-1">100+</div>
-                <div className="text-sm text-gray-600">Events Documented</div>
+                <div className="text-sm text-gray-600">Sự kiện được ghi lại</div>
               </div>
             </motion.div>
 
@@ -216,7 +216,7 @@ const CommunityGallery = () => {
                     <h3 className="font-semibold text-gray-900 mb-1 group-hover:text-[#467057] transition-colors">
                       {image.title}
                     </h3>
-                    <p className="text-sm text-gray-500">{new Date(image.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
+                    <p className="text-sm text-gray-500">{new Date(image.date).toLocaleDateString('vi-VN', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
                   </div>
                 </motion.div>
               ))}
@@ -234,17 +234,17 @@ const CommunityGallery = () => {
               viewport={{ once: true }}
             >
               <h2 className="text-3xl md:text-4xl font-bold mb-6">
-                Be Part of Our Story
+                Trở thành một phần câu chuyện của chúng tôi
               </h2>
               <p className="text-xl text-gray-100 mb-8 max-w-2xl mx-auto">
-                Join our community of volunteers and create moments that matter.
-                Your actions today become the memories that inspire tomorrow.
+                Tham gia cộng đồng tình nguyện viên của chúng tôi và tạo ra những khoảnh khắc ý nghĩa.
+                Hành động của bạn hôm nay trở thành ký ức truyền cảm hứng cho ngày mai.
               </p>
               <a
                 href="/duties"
                 className="inline-flex items-center justify-center px-8 py-3 bg-white text-[#467057] hover:bg-gray-100 font-semibold rounded-lg transition-colors shadow-lg hover:shadow-xl"
               >
-                Get Involved Today
+                Tham gia ngay hôm nay
               </a>
             </motion.div>
           </div>
@@ -260,7 +260,7 @@ const CommunityGallery = () => {
               <button
                 onClick={closeLightbox}
                 className="absolute top-4 right-4 z-50 bg-white/20 hover:bg-white/30 text-white rounded-full p-2 transition-all"
-                aria-label="Close"
+                aria-label="Đóng"
               >
                 <X className="h-6 w-6" />
               </button>
@@ -280,14 +280,14 @@ const CommunityGallery = () => {
                   <button
                     onClick={() => navigateImage('prev')}
                     className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/20 hover:bg-white/30 text-white rounded-full p-3 transition-all z-50"
-                    aria-label="Previous image"
+                    aria-label="Ảnh trước"
                   >
                     <ChevronLeft className="h-6 w-6" />
                   </button>
                   <button
                     onClick={() => navigateImage('next')}
                     className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/20 hover:bg-white/30 text-white rounded-full p-3 transition-all z-50"
-                    aria-label="Next image"
+                    aria-label="Ảnh sau"
                   >
                     <ChevronRight className="h-6 w-6" />
                   </button>
@@ -302,7 +302,7 @@ const CommunityGallery = () => {
                 <h3 className="text-2xl font-bold mb-2">{selectedImage.title}</h3>
                 <p className="text-gray-200 mb-2">{selectedImage.description}</p>
                 <p className="text-sm text-gray-300">
-                  {new Date(selectedImage.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+                  {new Date(selectedImage.date).toLocaleDateString('vi-VN', { year: 'numeric', month: 'long', day: 'numeric' })}
                 </p>
               </div>
             </div>

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import Navbar from "./shared/Navbar";
 import { useDispatch, useSelector } from "react-redux";
 import Footer from "./shared/Footer";
@@ -15,32 +15,32 @@ const Browse = () => {
     return () => {
       dispatch(setSearchedQuery(""));
     };
-  }, []);
+  }, [dispatch]);
   const browseBanners = [
     {
       id: 1,
-      title: "Browse Volunteer Opportunities",
-      subtitle: "Search through hundreds of volunteer duties and find the perfect match",
+      title: "Duyệt Cơ hội Tình nguyện",
+      subtitle: "Tìm kiếm qua hàng trăm hoạt động tình nguyện và tìm được sự phù hợp hoàn hảo",
       image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=1200&h=600&fit=crop",
-      ctaText: "View All Duties",
+      ctaText: "Xem Tất cả Hoạt động",
       ctaLink: "/duties",
       gradient: "from-[#467057] to-[#2A4B37]"
     },
     {
       id: 2,
-      title: "Discover Your Passion",
-      subtitle: "Explore diverse volunteer opportunities across various fields and causes",
+      title: "Khám phá Đam mê của Bạn",
+      subtitle: "Khám phá các cơ hội tình nguyện đa dạng trên nhiều lĩnh vực và mục tiêu",
       image: "https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=1200&h=600&fit=crop",
-      ctaText: "See Upcoming Events",
+      ctaText: "Xem Sự kiện Sắp Diễn Ra",
       ctaLink: "/upcoming",
       gradient: "from-[#2A4B37] to-[#467057]"
     },
     {
       id: 3,
-      title: "Join the Movement",
-      subtitle: "Be part of a community dedicated to creating positive change",
+      title: "Tham gia Phong trào",
+      subtitle: "Trở thành một phần của cộng đồng cam kết tạo ra thay đổi tích cực",
       image: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=1200&h=600&fit=crop",
-      ctaText: "Start Volunteering",
+      ctaText: "Bắt đầu Tình nguyện",
       ctaLink: "/duties",
       gradient: "from-[#467057] to-[#345441]"
     }

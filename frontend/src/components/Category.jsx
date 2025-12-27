@@ -1,3 +1,6 @@
+import { useState, useEffect } from "react";
+import axios from "axios";
+import { USER_API } from "@/utils/constant";
 import {
   Carousel,
   CarouselContent,
@@ -16,6 +19,32 @@ const imageList = [
 ];
 
 const Category = () => {
+  const [stats, setStats] = useState({
+    volunteers: "0+",
+    activities: "0+",
+    partners: "0+"
+  });
+
+  useEffect(() => {
+    fetchStats();
+  }, []);
+
+  const fetchStats = async () => {
+    try {
+      const res = await axios.get(`${USER_API}/public-stats`);
+      if (res.data.success) {
+        const { activeVolunteers, totalDuties, partnerOrganizations } = res.data.stats;
+        setStats({
+          volunteers: `${activeVolunteers}+`,
+          activities: `${totalDuties}+`,
+          partners: `${partnerOrganizations}+`
+        });
+      }
+    } catch (error) {
+      console.error("Failed to load statistics:", error);
+    }
+  };
+
   return (
     <div className="flex flex-col items-center gap-8 max-w-7xl mx-auto my-16 px-4">
       <div className="text-center">
@@ -67,15 +96,15 @@ const Category = () => {
         <div className="flex justify-center mt-6">
           <div className="flex gap-8 mt-4">
             <div className="text-center">
-              <div className="text-3xl font-bold text-[#467057]">500+</div>
+              <div className="text-3xl font-bold text-[#467057]">{stats.volunteers}</div>
               <div className="text-gray-600">Tình nguyện viên</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-bold text-[#467057]">50+</div>
+              <div className="text-3xl font-bold text-[#467057]">{stats.activities}</div>
               <div className="text-gray-600">Hoạt động</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-bold text-[#467057]">10+</div>
+              <div className="text-3xl font-bold text-[#467057]">{stats.partners}</div>
               <div className="text-gray-600">Đối tác</div>
             </div>
           </div>

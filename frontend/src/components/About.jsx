@@ -1,42 +1,62 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { USER_API } from "@/utils/constant";
 import Navbar from "./shared/Navbar";
 import Footer from "./shared/Footer";
 import { Heart, Users, Target, Award, Sparkles, HandHeart } from "lucide-react";
 import { motion } from "framer-motion";
 
 const About = () => {
+  const [stats, setStats] = useState([
+    { number: "0+", label: "Tình nguyện viên đang hoạt động" },
+    { number: "0+", label: "Dự án đã hoàn thành" },
+    { number: "0+", label: "Tổ chức đối tác" },
+    { number: "0+", label: "Giờ tình nguyện" }
+  ]);
+
   useEffect(() => {
     window.scrollTo(0, 0);
+    fetchStats();
   }, []);
+
+  const fetchStats = async () => {
+    try {
+      const res = await axios.get(`${USER_API}/public-stats`);
+      if (res.data.success) {
+        const { activeVolunteers, completedProjects, partnerOrganizations, totalVolunteerHours } = res.data.stats;
+        setStats([
+          { number: `${activeVolunteers}+`, label: "Tình nguyện viên đang hoạt động" },
+          { number: `${completedProjects}+`, label: "Dự án đã hoàn thành" },
+          { number: `${partnerOrganizations}+`, label: "Tổ chức đối tác" },
+          { number: `${totalVolunteerHours >= 1000 ? (totalVolunteerHours / 1000).toFixed(1) + 'K' : totalVolunteerHours}+`, label: "Giờ tình nguyện" }
+        ]);
+      }
+    } catch (error) {
+      console.error("Failed to load statistics:", error);
+    }
+  };
 
   const values = [
     {
       icon: <Heart className="h-8 w-8" />,
-      title: "Compassion",
-      description: "We believe in the power of empathy and kindness to transform communities."
+      title: "Lòng Nhân Ái",
+      description: "Chúng tôi tin vào sức mạnh của sự đồng cảm và lòng tốt để biến đổi cộng đồng."
     },
     {
       icon: <Users className="h-8 w-8" />,
-      title: "Unity",
-      description: "Together we are stronger. We unite volunteers to create lasting impact."
+      title: "Đoàn Kết",
+      description: "Cùng nhau chúng ta mạnh mẽ hơn. Chúng tôi đoàn kết các tình nguyện viên để tạo ra tác động lâu dài."
     },
     {
       icon: <Target className="h-8 w-8" />,
-      title: "Purpose",
-      description: "Every volunteer action serves a meaningful purpose in building a better world."
+      title: "Mục Đích",
+      description: "Mỗi hành động tình nguyện đều phục vụ một mục đích ý nghĩa trong việc xây dựng một thế giới tốt đẹp hơn."
     },
     {
       icon: <Award className="h-8 w-8" />,
-      title: "Excellence",
-      description: "We strive for excellence in all our volunteer programs and initiatives."
+      title: "Xuất Sắc",
+      description: "Chúng tôi phấn đấu đạt được sự xuất sắc trong tất cả các chương trình và sáng kiến tình nguyện của chúng tôi."
     }
-  ];
-
-  const stats = [
-    { number: "500+", label: "Active Volunteers" },
-    { number: "100+", label: "Completed Projects" },
-    { number: "50+", label: "Partner Organizations" },
-    { number: "10K+", label: "Hours Volunteered" }
   ];
 
   return (
@@ -56,10 +76,10 @@ const About = () => {
                 <Sparkles className="h-12 w-12 text-yellow-300" />
               </div>
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
-                About <span className="text-yellow-300">Change-Makers</span>
+                Về <span className="text-yellow-300">Những Người Tạo Thay Đổi</span>
               </h1>
               <p className="text-xl md:text-2xl max-w-3xl mx-auto text-gray-100 leading-relaxed">
-                Connecting passionate volunteers with meaningful opportunities to create lasting impact in our communities
+                Kết nối những tình nguyện viên đầy nhiệt huyết với những cơ hội ý nghĩa để tạo ra tác động lâu dài trong cộng đồng của chúng ta
               </p>
             </motion.div>
           </div>
@@ -78,7 +98,7 @@ const About = () => {
                 <div className="relative">
                   <img
                     src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=800"
-                    alt="Volunteers working together"
+                    alt="Tình nguyện viên làm việc cùng nhau"
                     className="w-full h-[400px] object-cover rounded-2xl shadow-2xl"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#467057]/20 to-transparent rounded-2xl"></div>
@@ -91,17 +111,17 @@ const About = () => {
                 viewport={{ once: true }}
               >
                 <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
-                  Our <span className="text-[#467057]">Mission</span>
+                  Sứ mệnh <span className="text-[#467057]">của chúng tôi</span>
                 </h2>
                 <div className="space-y-4 text-lg text-gray-700 leading-relaxed">
                   <p>
-                    Our platform was created to honor the spirit of the July Revolution of Bangladesh — a historic movement that showcased the power of unity, courage, and determination for positive change.
+                    Nền tảng của chúng tôi được tạo ra để tôn vinh tinh thần của Cách mạng Tháng Bảy của Bangladesh — một phong trào lịch sử đã thể hiện sức mạnh của sự đoàn kết, lòng dũng cảm và quyết tâm cho sự thay đổi tích cực.
                   </p>
                   <p>
-                    Inspired by this legacy, we connect passionate volunteers with meaningful opportunities to serve their communities and make a real difference. We believe that every act of volunteering, big or small, contributes to building a stronger, more compassionate society.
+                    Được truyền cảm hứng từ di sản này, chúng tôi kết nối những tình nguyện viên đầy nhiệt huyết với những cơ hội ý nghĩa để phục vụ cộng đồng của họ và tạo ra sự khác biệt thực sự. Chúng tôi tin rằng mỗi hành động tình nguyện, dù lớn hay nhỏ, đều góp phần xây dựng một xã hội mạnh mẽ và nhân ái hơn.
                   </p>
                   <p className="font-semibold text-[#467057]">
-                    Join us in continuing the revolutionary spirit by offering your time, skills, and heart to causes that matter. Together, we can create lasting impact — just as those before us did.
+                    Hãy tham gia cùng chúng tôi để tiếp tục tinh thần cách mạng bằng cách dành thời gian, kỹ năng và trái tim của bạn cho những mục tiêu quan trọng. Cùng nhau, chúng ta có thể tạo ra tác động lâu dài — giống như những người đi trước đã làm.
                   </p>
                 </div>
               </motion.div>
@@ -120,10 +140,10 @@ const About = () => {
               className="text-center mb-12"
             >
               <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-                Our <span className="text-[#467057]">Values</span>
+                Giá trị <span className="text-[#467057]">của chúng tôi</span>
               </h2>
               <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                The principles that guide everything we do
+                Những nguyên tắc hướng dẫn mọi việc chúng tôi làm
               </p>
             </motion.div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -157,8 +177,8 @@ const About = () => {
               viewport={{ once: true }}
               className="text-center mb-12"
             >
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">Our Impact</h2>
-              <p className="text-xl text-gray-100">Numbers that tell our story</p>
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">Tác động của chúng tôi</h2>
+              <p className="text-xl text-gray-100">Những con số kể câu chuyện của chúng tôi</p>
             </motion.div>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
               {stats.map((stat, index) => (
@@ -191,24 +211,24 @@ const About = () => {
                 <HandHeart className="h-16 w-16 text-[#467057]" />
               </div>
               <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
-                Ready to Make a Difference?
+                Sẵn sàng tạo ra sự khác biệt?
               </h2>
               <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
-                Join thousands of volunteers who are already making an impact in their communities.
-                Find opportunities that match your passion and skills.
+                Tham gia cùng hàng nghìn tình nguyện viên đang tạo ra tác động trong cộng đồng của họ.
+                Tìm những cơ hội phù hợp với đam mê và kỹ năng của bạn.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <a
                   href="/duties"
                   className="inline-flex items-center justify-center px-8 py-3 bg-[#467057] hover:bg-[#2A4B37] text-white font-semibold rounded-lg transition-colors shadow-lg hover:shadow-xl"
                 >
-                  Browse Opportunities
+                  Xem các cơ hội
                 </a>
                 <a
                   href="/signup"
                   className="inline-flex items-center justify-center px-8 py-3 bg-white border-2 border-[#467057] text-[#467057] hover:bg-[#467057] hover:text-white font-semibold rounded-lg transition-colors"
                 >
-                  Join Us Today
+                  Tham gia ngay hôm nay
                 </a>
               </div>
             </motion.div>
